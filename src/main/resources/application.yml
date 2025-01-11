@@ -1,0 +1,35 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /api
+
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        boot:
+          allow_jdbc_metadata_access=false:
+
+    database: POSTGRESQL
+    show-sql: true
+    #     Hibernate ddl auto (create, create-drop, validate, update)
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5432/auto
+    username: admin
+    password: admin
+    driverClassName: org.postgresql.Driver
+jwt:
+  token:
+    validity: 18000
+    prefix: Bearer
+  signing:
+    key: 1Jy6lXMld5+F2K8z7Bc8E3z6oKQPfsd7L3l7QG3BFAc=
+  authorities:
+    key: roles
+  header:
+    string: Authorization
