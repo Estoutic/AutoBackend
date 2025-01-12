@@ -10,4 +10,6 @@ public interface IAuthService {
     UUID save(UserDto userDto);
 
     User getCurrentUser();
+
+    User getUserByEmail(String email);
 }

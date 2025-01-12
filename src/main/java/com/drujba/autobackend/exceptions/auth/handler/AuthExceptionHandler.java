@@ -71,4 +71,14 @@ public class AuthExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<ErrorResponse> handlerRoleDoesNotExist(TokenRefreshException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Not Found",
+                exception.getMessage(),
+                HttpStatus.NOT_FOUND.value()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }

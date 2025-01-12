@@ -33,3 +33,6 @@ jwt:
     key: roles
   header:
     string: Authorization
+  refresh:
+    token:
+      expiration: 7

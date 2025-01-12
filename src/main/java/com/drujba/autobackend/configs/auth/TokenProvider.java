@@ -67,23 +67,26 @@ public class TokenProvider implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(Authentication authentication) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String userJson = objectMapper.writeValueAsString(userDetails);
-
-        String authorities = authentication.getAuthorities().stream()
+    public String generateToken(String email, Collection<? extends GrantedAuthority> authorities) {
+        String roles = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         return Jwts.builder()
-                .setSubject(userJson)
-                .claim(AUTHORITIES_KEY, authorities)
+                .setSubject(email)
+                .claim(AUTHORITIES_KEY, roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 5000))
                 .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
                 .compact();
     }
+
+    public String generateToken(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return generateToken(userDetails.getUsername(), authentication.getAuthorities());
+    }
+
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final UserDetailsDto details = getUserDetailsFromToken(token);

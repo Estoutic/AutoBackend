@@ -11,9 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AuthToken {
     private String token;
+    private String refreshToken;
 
-    public AuthToken(String token) {
+    public AuthToken(String token, String refreshToken) {
         this.token = token;
+        this.refreshToken = refreshToken;
     }
 
 }
