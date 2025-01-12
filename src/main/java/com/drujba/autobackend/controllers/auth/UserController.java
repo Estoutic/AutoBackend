@@ -10,7 +10,6 @@ import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.services.auth.IAuthService;
 import com.drujba.autobackend.services.auth.IRefreshTokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +42,6 @@ public class UserController {
 
     @PostMapping("/auth")
     public ResponseEntity<?> generateToken(@RequestBody UserDto loginUser) throws JsonProcessingException {
-        // Аутентификация пользователя
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginUser.getEmail(),
