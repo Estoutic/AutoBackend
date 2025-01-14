@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface ICarModelService {
 
     UUID saveCarModel(CarModelDto carModelDto);
+
+    void deleteCarModel(UUID uuid);
 }

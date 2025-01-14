@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.repostiories.auto;
+package com.drujba.autobackend.db.repostiories.car;
 
 import com.drujba.autobackend.db.entities.auto.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
