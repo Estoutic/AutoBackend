@@ -29,6 +29,12 @@ public class CarController {
         carModelService.deleteCarModel(id);
     }
 
+    @PatchMapping("/model/{id}")
+    public ResponseEntity<Void> updateModel(@PathVariable UUID id, @RequestBody CarModelDto carModelDto) {
+        carModelService.updateCarModel(id, carModelDto);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/brands")
     public ResponseEntity<List<String>> getBrands() {
         List<String> brands = carModelRepository.findDistinctBrands();

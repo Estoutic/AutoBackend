@@ -3,6 +3,7 @@ package com.drujba.autobackend.services.car.impl;
 import com.drujba.autobackend.db.entities.auto.CarModel;
 import com.drujba.autobackend.db.repostiories.car.CarModelRepository;
 import com.drujba.autobackend.exceptions.car.CarModelAlreadyExistException;
+import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
 import com.drujba.autobackend.models.dto.auto.CarModelDto;
 import com.drujba.autobackend.services.car.ICarModelService;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,23 @@ public class CarModelService implements ICarModelService {
         if (carModelRepository.existsById(uuid)) {
             carModelRepository.deleteById(uuid);
         }
+    }
+
+    @Override
+    public void updateCarModel(UUID id, CarModelDto carModelDto) {
+        CarModel carModel = carModelRepository.findById(id)
+                .orElseThrow(() -> new CarModelDoesNotExistException(id.toString()));
+
+        if (carModelDto.getBrand() != null) {
+            carModel.setBrand(carModelDto.getBrand());
+        }
+        if (carModelDto.getModel() != null) {
+            carModel.setModel(carModelDto.getModel());
+        }
+        if (carModelDto.getGeneration() != null) {
+            carModel.setGeneration(carModelDto.getGeneration());
+        }
+
+        carModelRepository.save(carModel);
     }
 }

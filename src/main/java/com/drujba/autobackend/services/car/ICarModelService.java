@@ -10,4 +10,6 @@ public interface ICarModelService {
     UUID saveCarModel(CarModelDto carModelDto);
 
     void deleteCarModel(UUID uuid);
+
+    void updateCarModel(UUID id, CarModelDto carModelDto);
 }
