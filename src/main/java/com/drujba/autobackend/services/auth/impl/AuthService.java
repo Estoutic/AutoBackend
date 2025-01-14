@@ -1,8 +1,8 @@
 package com.drujba.autobackend.services.auth.impl;
 
-import com.drujba.autobackend.db.entities.Role;
-import com.drujba.autobackend.db.entities.User;
-import com.drujba.autobackend.db.repostiories.UserRepository;
+import com.drujba.autobackend.db.entities.auth.Role;
+import com.drujba.autobackend.db.entities.auth.User;
+import com.drujba.autobackend.db.repostiories.auth.UserRepository;
 import com.drujba.autobackend.exceptions.auth.InvalidEmailInputException;
 import com.drujba.autobackend.exceptions.auth.UserAlreadyExistException;
 import com.drujba.autobackend.exceptions.auth.UserDoesNotExistException;

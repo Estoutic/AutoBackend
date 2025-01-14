@@ -1,7 +1,7 @@
 package com.drujba.autobackend.services.auth;
 
-import com.drujba.autobackend.db.entities.RefreshToken;
-import com.drujba.autobackend.db.entities.User;
+import com.drujba.autobackend.db.entities.auth.RefreshToken;
+import com.drujba.autobackend.db.entities.auth.User;
 
 import java.util.Optional;
 

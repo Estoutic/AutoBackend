@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.entities;
+package com.drujba.autobackend.db.entities.auth;
 
 import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.utils.PasswordEncoder;

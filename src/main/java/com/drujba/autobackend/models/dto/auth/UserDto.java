@@ -1,7 +1,7 @@
 package com.drujba.autobackend.models.dto.auth;
 
-import com.drujba.autobackend.db.entities.User;
-import com.drujba.autobackend.db.entities.Role;
+import com.drujba.autobackend.db.entities.auth.User;
+import com.drujba.autobackend.db.entities.auth.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

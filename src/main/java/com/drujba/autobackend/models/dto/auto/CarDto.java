@@ -1,0 +1,50 @@
+package com.drujba.autobackend.models.dto.auto;
+
+import com.drujba.autobackend.models.enums.auto.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.util.UUID;
+
+@Getter
+@Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
+public class CarDto {
+
+    private UUID carId;
+
+    private Integer year;
+
+    private String description;
+
+    private String color;
+
+    private BigDecimal mileage;
+
+    private Integer ownersCount;
+
+    private TransmissionType transmissionType;
+
+    private BodyType bodyType;
+
+    private String enginePower;
+
+    private EngineType engineType;
+
+    private DriveType driveType;
+
+    private String engineCapacity;
+
+    private SteeringPosition steeringPosition;
+
+    private Integer seatsCount;
+
+    private BigDecimal price;
+
+}

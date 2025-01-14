@@ -1,7 +1,7 @@
 package com.drujba.autobackend.db.seeder;
 
-import com.drujba.autobackend.db.entities.Role;
-import com.drujba.autobackend.db.repostiories.RoleRepository;
+import com.drujba.autobackend.db.entities.auth.Role;
+import com.drujba.autobackend.db.repostiories.auth.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +22,10 @@ public class RoleSeeder implements ApplicationRunner {
     private static final Logger log = LoggerFactory.getLogger(RoleSeeder.class);
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        seedRoles(); // Запускаем сидер сразу при старте приложения
+    public void run(ApplicationArguments args) {
+        seedRoles();
         log.info("Role seeder executed on application startup");
+
     }
 
     private void seedRoles() {

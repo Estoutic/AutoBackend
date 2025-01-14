@@ -14,3 +14,4 @@ public enum CurrencyCode {
         return bundle.getString("currencyCode." + this.name().toLowerCase());
     }
 }
+

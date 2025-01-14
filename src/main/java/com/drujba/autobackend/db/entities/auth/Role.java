@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.entities;
+package com.drujba.autobackend.db.entities.auth;
 
 
 import jakarta.persistence.*;

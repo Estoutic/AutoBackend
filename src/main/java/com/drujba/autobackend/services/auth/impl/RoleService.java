@@ -1,7 +1,7 @@
 package com.drujba.autobackend.services.auth.impl;
 
-import com.drujba.autobackend.db.entities.Role;
-import com.drujba.autobackend.db.repostiories.RoleRepository;
+import com.drujba.autobackend.db.entities.auth.Role;
+import com.drujba.autobackend.db.repostiories.auth.RoleRepository;
 import com.drujba.autobackend.exceptions.auth.RoleDoesNotExistException;
 import com.drujba.autobackend.services.auth.IRoleService;
 import lombok.RequiredArgsConstructor;

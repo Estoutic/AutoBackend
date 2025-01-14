@@ -1,6 +1,6 @@
-package com.drujba.autobackend.db.repostiories;
+package com.drujba.autobackend.db.repostiories.auth;
 
-import com.drujba.autobackend.db.entities.Role;
+import com.drujba.autobackend.db.entities.auth.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

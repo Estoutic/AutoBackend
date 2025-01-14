@@ -1,6 +1,6 @@
 package com.drujba.autobackend.services.auth;
 
-import com.drujba.autobackend.db.entities.User;
+import com.drujba.autobackend.db.entities.auth.User;
 import com.drujba.autobackend.models.dto.auth.UserDto;
 
 import java.util.UUID;

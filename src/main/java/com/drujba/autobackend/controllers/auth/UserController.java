@@ -1,8 +1,8 @@
 package com.drujba.autobackend.controllers.auth;
 
 import com.drujba.autobackend.configs.auth.TokenProvider;
-import com.drujba.autobackend.db.entities.RefreshToken;
-import com.drujba.autobackend.db.entities.User;
+import com.drujba.autobackend.db.entities.auth.RefreshToken;
+import com.drujba.autobackend.db.entities.auth.User;
 import com.drujba.autobackend.exceptions.auth.TokenRefreshException;
 import com.drujba.autobackend.models.dto.auth.AuthToken;
 import com.drujba.autobackend.models.dto.auth.RefreshTokenDto;
