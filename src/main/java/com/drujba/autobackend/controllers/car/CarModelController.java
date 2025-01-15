@@ -1,7 +1,7 @@
 package com.drujba.autobackend.controllers.car;
 
 import com.drujba.autobackend.db.repostiories.car.CarModelRepository;
-import com.drujba.autobackend.models.dto.auto.CarModelDto;
+import com.drujba.autobackend.models.dto.car.CarModelDto;
 import com.drujba.autobackend.services.car.ICarModelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

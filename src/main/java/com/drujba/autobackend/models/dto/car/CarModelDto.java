@@ -1,4 +1,4 @@
-package com.drujba.autobackend.models.dto.auto;
+package com.drujba.autobackend.models.dto.car;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

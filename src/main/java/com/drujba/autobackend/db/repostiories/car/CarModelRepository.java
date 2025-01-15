@@ -14,6 +14,8 @@ import java.util.UUID;
 public interface CarModelRepository extends JpaRepository<CarModel, UUID> {
     Optional<CarModel> findByBrandAndModelAndGeneration(String brand, String model, String generation);
 
+    Optional<CarModel> findByGeneration(String generation);
+
     Boolean existsByBrandAndModelAndGeneration(String brand, String model, String generation);
 
     @Query("SELECT DISTINCT cm.brand FROM CarModel cm")

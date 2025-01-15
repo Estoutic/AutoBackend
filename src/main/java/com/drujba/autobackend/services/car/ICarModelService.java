@@ -1,6 +1,6 @@
 package com.drujba.autobackend.services.car;
 
-import com.drujba.autobackend.models.dto.auto.CarModelDto;
+import com.drujba.autobackend.models.dto.car.CarModelDto;
 
 import java.util.UUID;
 

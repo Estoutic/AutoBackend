@@ -1,4 +1,4 @@
-package com.drujba.autobackend.models.dto.auto;
+package com.drujba.autobackend.models.dto.car;
 
 import com.drujba.autobackend.models.enums.auto.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CarCreationDto {
 
-    private UUID carId;
+    private String generation;
 
     private Integer year;
 
