@@ -7,6 +7,7 @@ import com.drujba.autobackend.db.repostiories.car.CarRepository;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
 import com.drujba.autobackend.models.dto.car.CarCreationDto;
+import com.drujba.autobackend.models.dto.car.CarDto;
 import com.drujba.autobackend.models.dto.car.CarUpdateDto;
 import com.drujba.autobackend.services.car.ICarService;
 import lombok.RequiredArgsConstructor;
@@ -83,4 +84,11 @@ public class CarService implements ICarService {
 
         carRepository.save(car);
     }
+
+    @Override
+    public CarDto getCar(UUID id) {
+        Car car = carRepository.findById(id).orElseThrow(() -> new CarDoesNotExistException(id.toString()));
+        return new CarDto(car);
+    }
+
 }

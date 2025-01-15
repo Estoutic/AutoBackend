@@ -1,6 +1,7 @@
 package com.drujba.autobackend.services.car;
 
 import com.drujba.autobackend.models.dto.car.CarCreationDto;
+import com.drujba.autobackend.models.dto.car.CarDto;
 import com.drujba.autobackend.models.dto.car.CarUpdateDto;
 
 import java.util.UUID;
@@ -12,4 +13,6 @@ public interface ICarService {
     void deleteCar(UUID id);
 
     void updateCar(UUID id, CarUpdateDto carUpdateDto);
+
+    CarDto getCar(UUID id);
 }
