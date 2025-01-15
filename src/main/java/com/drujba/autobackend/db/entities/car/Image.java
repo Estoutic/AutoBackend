@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.entities.auto;
+package com.drujba.autobackend.db.entities.car;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,15 +1,14 @@
-package com.drujba.autobackend.db.entities.auto;
+package com.drujba.autobackend.db.entities.car;
 
+import com.drujba.autobackend.models.dto.auto.CarCreationDto;
 import com.drujba.autobackend.models.enums.auto.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -60,4 +59,23 @@ public class Car {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    public Car(CarCreationDto dto, CarModel carModel) {
+        this.carModel = carModel;
+        this.year = dto.getYear();
+        this.color = dto.getColor();
+        this.mileage = dto.getMileage() != null ? dto.getMileage().intValue() : 0;
+        this.ownersCount = dto.getOwnersCount() != null ? dto.getOwnersCount() : 0;
+        this.transmissionType = dto.getTransmissionType();
+        this.bodyType = dto.getBodyType();
+        this.enginePower = dto.getEnginePower() != null ? Integer.parseInt(dto.getEnginePower()) : 0;
+        this.engineType = dto.getEngineType();
+        this.driveType = dto.getDriveType();
+        this.engineCapacity = dto.getEngineCapacity() != null ? Double.parseDouble(dto.getEngineCapacity()) : 0.0;
+        this.steeringPosition = dto.getSteeringPosition();
+        this.seatsCount = dto.getSeatsCount() != null ? dto.getSeatsCount() : 0;
+        this.price = dto.getPrice() != null ? dto.getPrice().doubleValue() : 0.0;
+        this.description = dto.getDescription();
+        this.isAvailable = true;
+    }
 }

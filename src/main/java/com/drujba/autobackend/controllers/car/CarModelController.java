@@ -1,4 +1,4 @@
-package com.drujba.autobackend.controllers;
+package com.drujba.autobackend.controllers.car;
 
 import com.drujba.autobackend.db.repostiories.car.CarModelRepository;
 import com.drujba.autobackend.models.dto.auto.CarModelDto;
@@ -12,24 +12,24 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/car")
+@RequestMapping("/car/model")
 @RequiredArgsConstructor
-public class CarController {
+public class CarModelController {
 
     private final ICarModelService carModelService;
     private final CarModelRepository carModelRepository;
 
-    @PostMapping("/model")
+    @PostMapping("")
     public ResponseEntity<UUID> createModel(@RequestBody CarModelDto carModelDto) {
         return new ResponseEntity<>(carModelService.saveCarModel(carModelDto), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/model/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         carModelService.deleteCarModel(id);
     }
 
-    @PatchMapping("/model/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Void> updateModel(@PathVariable UUID id, @RequestBody CarModelDto carModelDto) {
         carModelService.updateCarModel(id, carModelDto);
         return ResponseEntity.noContent().build();

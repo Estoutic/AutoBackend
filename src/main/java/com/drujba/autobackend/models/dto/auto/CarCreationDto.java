@@ -15,7 +15,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
-public class CarDto {
+public class CarCreationDto {
 
     private UUID carId;
 
@@ -46,5 +46,4 @@ public class CarDto {
     private Integer seatsCount;
 
     private BigDecimal price;
-
 }

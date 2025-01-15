@@ -1,6 +1,6 @@
 package com.drujba.autobackend.db.entities;
 
-import com.drujba.autobackend.db.entities.auto.Car;
+import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.models.enums.ContactType;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import jakarta.persistence.*;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity

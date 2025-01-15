@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.entities.auto;
+package com.drujba.autobackend.db.entities.car;
 
 import com.drujba.autobackend.models.dto.auto.CarModelDto;
 import jakarta.persistence.*;

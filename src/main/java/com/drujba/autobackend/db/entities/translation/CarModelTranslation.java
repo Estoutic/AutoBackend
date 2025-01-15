@@ -1,6 +1,6 @@
 package com.drujba.autobackend.db.entities.translation;
 
-import com.drujba.autobackend.db.entities.auto.CarModel;
+import com.drujba.autobackend.db.entities.car.CarModel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
