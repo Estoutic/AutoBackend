@@ -19,7 +19,7 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://0.0.0.0:5432/auto
+    url: jdbc:postgresql://213.183.45.128:5432/auto
     username: admin
     password: admin
     driverClassName: org.postgresql.Driver
@@ -36,3 +36,9 @@ jwt:
   refresh:
     token:
       expiration: 7
+
+minio:
+  url: http://213.183.45.128:9000
+  accessKey: admin
+  secretKey: admin12345
+  bucket: images-bucket
