@@ -1,5 +1,6 @@
 package com.drujba.autobackend.exceptions.car.handler;
 
+import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarModelAlreadyExistException;
 import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
 import com.drujba.autobackend.models.dto.auth.ErrorResponse;
@@ -23,6 +24,16 @@ public class CarExceptionHandler {
 
     @ExceptionHandler(CarModelDoesNotExistException.class)
     public ResponseEntity<ErrorResponse> handleCarModelAlreadyExistException(CarModelDoesNotExistException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Not Found",
+                exception.getMessage(),
+                HttpStatus.NOT_FOUND.value()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CarDoesNotExistException.class)
+    public ResponseEntity<ErrorResponse> handleCarModelAlreadyExistException(CarDoesNotExistException exception) {
         ErrorResponse errorResponse = new ErrorResponse(
                 "Not Found",
                 exception.getMessage(),

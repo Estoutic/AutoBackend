@@ -2,12 +2,18 @@ package com.drujba.autobackend.controllers.car;
 
 import com.drujba.autobackend.models.dto.car.CarCreationDto;
 import com.drujba.autobackend.models.dto.car.CarDto;
+import com.drujba.autobackend.models.dto.car.CarFilterDto;
 import com.drujba.autobackend.models.dto.car.CarUpdateDto;
 import com.drujba.autobackend.services.car.ICarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -37,5 +43,18 @@ public class CarController {
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> getCar(@PathVariable UUID id) {
         return ResponseEntity.ok(carService.getCar(id));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Page<CarDto>> getAllCars(
+            @RequestBody CarFilterDto filterDto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+        Page<CarDto> cars = carService.getFilteredCars(filterDto, pageable);
+        return ResponseEntity.ok(cars);
     }
 }
