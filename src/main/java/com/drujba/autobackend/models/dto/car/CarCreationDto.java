@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CarCreationDto {
 
-    private String generation;
+    private CarModelDto carModelDto;
 
     private Integer year;
 
