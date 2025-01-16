@@ -23,9 +23,11 @@ public class ImageService implements IImageService {
 
     @Override
     public UUID saveImage(UUID carId, String fileName, InputStream inputStream, String contentType) {
-        String path = minioService.uploadFile(fileName, inputStream, contentType);
         Car car = carRepository.findById(carId).orElseThrow(() -> new CarDoesNotExistException(carId.toString()));
-        Image image = new Image(path, car);
+        Image image = new Image(car);
+        imageRepository.save(image);
+        String path = minioService.uploadFile(image.getId().toString(), inputStream, contentType);
+        image.setFilePath(String.format("%s%s", path, image.getId()));
         return imageRepository.save(image).getId();
     }
 }

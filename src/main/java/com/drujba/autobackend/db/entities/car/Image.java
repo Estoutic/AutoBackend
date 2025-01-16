@@ -31,6 +31,11 @@ public class Image {
     @Column(name = "created_at", updatable = false, nullable = false)
     private Instant createdAt;
 
+    public Image(Car car) {
+        this.filePath = "";
+        this.car = car;
+    }
+
     public Image(String filePath, Car car) {
         this.filePath = filePath;
         this.car = car;

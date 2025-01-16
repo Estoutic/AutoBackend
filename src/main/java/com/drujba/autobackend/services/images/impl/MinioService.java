@@ -39,6 +39,6 @@ public class MinioService implements IMinioService {
                 .contentType(contentType)
                 .build());
 
-        return String.format("%s/%s/%s", minioUrl, bucketName, fileName);
+        return String.format("%s/%s/", minioUrl, bucketName);
     }
 }
