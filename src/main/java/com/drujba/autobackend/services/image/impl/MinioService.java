@@ -1,10 +1,7 @@
-package com.drujba.autobackend.services.images.impl;
+package com.drujba.autobackend.services.image.impl;
 
-import com.drujba.autobackend.services.images.IMinioService;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import com.drujba.autobackend.services.image.IMinioService;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,5 +37,16 @@ public class MinioService implements IMinioService {
                 .build());
 
         return String.format("%s/%s/", minioUrl, bucketName);
+    }
+
+    @Override
+    @SneakyThrows
+    public void deleteFile(String fileName) {
+        minioClient.removeObject(
+                RemoveObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(fileName)
+                        .build()
+        );
     }
 }

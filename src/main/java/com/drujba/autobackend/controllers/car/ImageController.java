@@ -1,11 +1,11 @@
 package com.drujba.autobackend.controllers.car;
 
+import com.drujba.autobackend.models.dto.car.ImageResponseDto;
 import com.drujba.autobackend.models.dto.car.UploadImageRequest;
-import com.drujba.autobackend.services.images.IImageService;
+import com.drujba.autobackend.services.image.IImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -28,6 +28,17 @@ public class ImageController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/{id}/all")
+    public ResponseEntity<ImageResponseDto> getAllImages(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(imageService.getImagesByCarId(id));
+    }
+
+    @DeleteMapping("/{id}/photo/{photoId}")
+    public ResponseEntity<Void> deleteImage(@PathVariable("id") UUID id, @PathVariable("photoId") UUID photoId) {
+        imageService.deleteImage(id, photoId);
+        return ResponseEntity.noContent().build();
     }
 }
 

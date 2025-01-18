@@ -1,8 +1,6 @@
 package com.drujba.autobackend.exceptions.car.handler;
 
-import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
-import com.drujba.autobackend.exceptions.car.CarModelAlreadyExistException;
-import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
+import com.drujba.autobackend.exceptions.car.*;
 import com.drujba.autobackend.models.dto.auth.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +21,7 @@ public class CarExceptionHandler {
     }
 
     @ExceptionHandler(CarModelDoesNotExistException.class)
-    public ResponseEntity<ErrorResponse> handleCarModelAlreadyExistException(CarModelDoesNotExistException exception) {
+    public ResponseEntity<ErrorResponse> handleCarModelDoesNotExistException(CarModelDoesNotExistException exception) {
         ErrorResponse errorResponse = new ErrorResponse(
                 "Not Found",
                 exception.getMessage(),
@@ -33,12 +31,30 @@ public class CarExceptionHandler {
     }
 
     @ExceptionHandler(CarDoesNotExistException.class)
-    public ResponseEntity<ErrorResponse> handleCarModelAlreadyExistException(CarDoesNotExistException exception) {
+    public ResponseEntity<ErrorResponse> handleCarDoesNotExistException(CarDoesNotExistException exception) {
         ErrorResponse errorResponse = new ErrorResponse(
                 "Not Found",
                 exception.getMessage(),
                 HttpStatus.NOT_FOUND.value()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(ImageDoestNotExistException.class)
+    public ResponseEntity<ErrorResponse> handleImageDoestNotExistException(ImageDoestNotExistException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Not Found",
+                exception.getMessage(),
+                HttpStatus.NOT_FOUND.value()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(ImageDoesNotBelongException.class)
+    public ResponseEntity<ErrorResponse> handleImageDoesNotBelongException(ImageDoesNotBelongException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Conflict",
+                exception.getMessage(),
+                HttpStatus.CONFLICT.value()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }

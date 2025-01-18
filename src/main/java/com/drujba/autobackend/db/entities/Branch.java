@@ -1,5 +1,6 @@
 package com.drujba.autobackend.db.entities;
 
+import com.drujba.autobackend.models.dto.branch.BranchCreationDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,4 +43,17 @@ public class Branch {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    public Branch(BranchCreationDto dto) {
+        this.name = dto.getName();
+        this.address = dto.getAddress();
+        this.city = dto.getCity();
+        this.region = dto.getRegion();
+        this.phone = dto.getPhone();
+        this.email = dto.getEmail();
+        this.workingHours = dto.getWorkingHours();
+        this.latitude = dto.getLatitude();
+        this.longitude = dto.getLongitude();
+    }
+
 }
