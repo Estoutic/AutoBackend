@@ -65,10 +65,10 @@ public class UserController {
     }
 
 
-    @PostMapping("/register")
-    public ResponseEntity<UUID> saveUser(@RequestBody UserDto user) {
-        return new ResponseEntity<>(authService.save(user), HttpStatus.CREATED);
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<UUID> saveUser(@RequestBody UserDto user) {
+//        return new ResponseEntity<>(authService.save(user), HttpStatus.CREATED);
+//    }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthToken> refreshToken(@RequestBody RefreshTokenDto refreshToken) {

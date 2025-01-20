@@ -1,6 +1,7 @@
 package com.drujba.autobackend.db.repostiories;
 
 import com.drujba.autobackend.db.entities.Application;
+import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ import java.util.UUID;
 public interface ApplicationRepository extends JpaRepository<Application, UUID> {
 
     Page<Application> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    Page<Application> findAllByStatusOrderByCreatedAtDesc(ApplicationStatus status, Pageable pageable);
 }

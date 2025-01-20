@@ -9,7 +9,11 @@ public interface IAuthService {
 
     UUID save(UserDto userDto);
 
+    UUID saveSuperAdmin(UserDto userDto);
+
     User getCurrentUser();
 
     User getUserByEmail(String email);
+
+    Boolean existsUserByEmail(String email);
 }

@@ -46,8 +46,8 @@ public class WebSecurityConfig {
 //                                "/swagger-ui/**",
 //                                "/v3/api-docs/**",
 //                                "/webjars/**").permitAll()
-//                        .requestMatchers("/user/auth", "/user/register", "/main/version").permitAll()
-                        .anyRequest().permitAll()
+                                .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
+                                .anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -62,7 +62,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://estoutic.ru","http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("https://estoutic.ru", "http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

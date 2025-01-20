@@ -42,9 +42,14 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getApplication(id));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<Page<ApplicationDto>> getAllApplications(Pageable pageable) {
-        return ResponseEntity.ok(applicationService.getApplications(pageable));
+    @GetMapping("/filter")
+    public ResponseEntity<Page<ApplicationDto>> getApplicationsByStatus(
+            @RequestParam(required = false) ApplicationStatus status,
+            Pageable pageable) {
+        if (status == null) {
+            return ResponseEntity.ok(applicationService.getApplications(pageable));
+        }
+        return ResponseEntity.ok(applicationService.getApplicationsByStatus(pageable,status));
     }
 
 

@@ -20,4 +20,6 @@ public interface IApplicationService {
 
     Page<ApplicationDto> getApplications(Pageable pageable);
 
+    Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status);
+
 }

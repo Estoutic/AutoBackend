@@ -7,6 +7,8 @@ import com.drujba.autobackend.services.auth.IRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoleService implements IRoleService {
@@ -16,5 +18,10 @@ public class RoleService implements IRoleService {
     @Override
     public Role findByName(String name) {
         return roleRepository.findRoleByName(name).orElseThrow(() -> new RoleDoesNotExistException(name));
+    }
+
+    @Override
+    public List<Role> findAll(){
+        return roleRepository.findAll();
     }
 }

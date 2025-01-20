@@ -67,4 +67,9 @@ public class ApplicationService implements IApplicationService {
                 .map(ApplicationDto::new);
     }
 
+    @Override
+    public Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status) {
+        return applicationRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable)
+                .map(ApplicationDto::new);
+    }
 }

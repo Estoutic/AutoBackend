@@ -8,6 +8,8 @@ import com.drujba.autobackend.exceptions.auth.UserAlreadyExistException;
 import com.drujba.autobackend.exceptions.auth.UserDoesNotExistException;
 import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.services.auth.IAuthService;
+import com.drujba.autobackend.services.auth.IRoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,7 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -30,7 +31,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class AuthService implements IAuthService, UserDetailsService {
 
-    private final RoleService roleService;
+    private final IRoleService roleService;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -47,16 +48,11 @@ public class AuthService implements IAuthService, UserDetailsService {
         return authorities;
     }
 
-    public List<UserDto> findAll() {
-        return userRepository.findAll().stream().map(UserDto::new).toList();
-    }
-
-
     @Override
     public UUID save(UserDto userDto) {
 
         String email = userDto.getEmail();
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsUserByEmail(email)) {
             throw new UserAlreadyExistException(email);
         }
 
@@ -83,6 +79,17 @@ public class AuthService implements IAuthService, UserDetailsService {
     }
 
     @Override
+    @Transactional
+    public UUID saveSuperAdmin(UserDto userDto){
+        User user = new User(userDto);
+
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Set<Role> roleSet = new HashSet<>(roleService.findAll());
+        user.setRoles(roleSet);
+        return userRepository.save(user).getId();
+    }
+
+    @Override
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -99,5 +106,10 @@ public class AuthService implements IAuthService, UserDetailsService {
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UserDoesNotExistException(email));
+    }
+
+    @Override
+    public Boolean existsUserByEmail(String email) {
+        return userRepository.existsUserByEmail(email);
     }
 }
