@@ -11,4 +11,8 @@ public class AuthorityDto {
 
 
     private String authority;
+
+    public AuthorityDto(String authority) {
+        this.authority = authority;
+    }
 }

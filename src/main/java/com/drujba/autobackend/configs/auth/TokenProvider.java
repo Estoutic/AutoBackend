@@ -1,5 +1,6 @@
 package com.drujba.autobackend.configs.auth;
 
+import com.drujba.autobackend.models.dto.auth.AuthorityDto;
 import com.drujba.autobackend.models.dto.auth.UserDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -72,13 +74,22 @@ public class TokenProvider implements Serializable {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        return Jwts.builder()
-                .setSubject(email)
-                .claim(AUTHORITIES_KEY, roles)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 5000))
-                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
-                .compact();
+        UserDetailsDto userDetailsDto = new UserDetailsDto();
+        userDetailsDto.setUsername(email);
+
+        try {
+            String userJson = new ObjectMapper().writeValueAsString(userDetailsDto);
+
+            return Jwts.builder()
+                    .setSubject(userJson)
+                    .claim(AUTHORITIES_KEY, roles) // Сохраняем роли как строку
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 5000))
+                    .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
+                    .compact();
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Ошибка при сериализации UserDetailsDto", e);
+        }
     }
 
     public String generateToken(Authentication authentication) {
@@ -105,8 +116,10 @@ public class TokenProvider implements Serializable {
 
         final Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.trim()))
                         .collect(Collectors.toList());
+
+        log.info("Extracted authorities from token: " + authorities);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }

@@ -46,7 +46,7 @@ public class WebSecurityConfig {
 //                                "/swagger-ui/**",
 //                                "/v3/api-docs/**",
 //                                "/webjars/**").permitAll()
-                                .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
+                                .requestMatchers("/admin/create-user").hasRole("SUPERADMIN")
                                 .anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))

@@ -18,7 +18,7 @@ import java.util.UUID;
 public class AdminController {
     private final IAuthService authService;
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('SUPERADMIN')")
     @PostMapping("/create-user")
     public ResponseEntity<UUID> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(authService.save(userDto));
