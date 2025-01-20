@@ -1,7 +1,8 @@
 package com.drujba.autobackend.db.entities;
 
 import com.drujba.autobackend.db.entities.car.Car;
-import com.drujba.autobackend.models.enums.ContactType;
+import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
+import com.drujba.autobackend.models.enums.application.ContactType;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -45,4 +46,13 @@ public class Application {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    public Application(ApplicationCreationDto applicationCreationDto, Car car, Branch branch) {
+        this.firstName = applicationCreationDto.getFirstName();
+        this.lastName = applicationCreationDto.getLastName();
+        this.contact = applicationCreationDto.getContact();
+        this.car = car;
+        this.branch = branch;
+        this.status = ApplicationStatus.ACCEPTED;
+    }
 }

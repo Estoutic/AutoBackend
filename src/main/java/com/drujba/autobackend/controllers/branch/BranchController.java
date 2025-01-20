@@ -19,7 +19,7 @@ public class BranchController {
 
     @PostMapping
     public ResponseEntity<UUID> createBranch(@RequestBody BranchCreationDto branchCreationDTO) {
-        return ResponseEntity.status(201).body(branchService.createBranch(branchCreationDTO));
+        return ResponseEntity.status(201).body(branchService.saveBranch(branchCreationDTO));
     }
 
     @DeleteMapping("/{id}")

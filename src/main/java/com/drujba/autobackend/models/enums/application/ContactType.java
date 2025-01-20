@@ -1,4 +1,4 @@
-package com.drujba.autobackend.models.enums;
+package com.drujba.autobackend.models.enums.application;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

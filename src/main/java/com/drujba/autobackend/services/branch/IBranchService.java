@@ -12,7 +12,7 @@ public interface IBranchService {
 
     BranchDto getBranchById(UUID id);
 
-    UUID createBranch(BranchCreationDto branchCreationDTO);
+    UUID saveBranch(BranchCreationDto branchCreationDTO);
 
     void deleteBranch(UUID id);
 }

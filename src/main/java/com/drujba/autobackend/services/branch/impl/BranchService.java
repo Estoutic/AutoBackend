@@ -35,7 +35,7 @@ public class BranchService implements IBranchService {
     }
 
     @Override
-    public UUID createBranch(BranchCreationDto branchCreationDto) {
+    public UUID saveBranch(BranchCreationDto branchCreationDto) {
         Branch branch = new Branch(branchCreationDto);
         return branchRepository.save(branch).getId();
     }
