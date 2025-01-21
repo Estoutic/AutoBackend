@@ -46,8 +46,9 @@ public class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/webjars/**").permitAll()
-                                .requestMatchers("/admin/create-user").hasRole("SUPERADMIN")
-                                .anyRequest().permitAll()
+                        .requestMatchers("/admin/user/**").hasAnyRole("ADMIN","SUPERADMIN" )
+                        .requestMatchers("/admin/user/create").hasRole("SUPERADMIN")
+                        .anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
