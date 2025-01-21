@@ -41,6 +41,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 path.equals("/users/auth") ||
                 path.equals("/main/version") ||
                 path.equals("/api/users/auth");
+//                path.equals("/swagger-ui.html") ||
+//                path.equals("/swagger-ui/index.html") ||
+//                path.equals("/swagger-resources/configuration/ui") ||
+//                path.equals("/v3/api-docs/**");
     }
 
     @Override
@@ -92,7 +96,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             chain.doFilter(req, res);
-        }catch (JwtAuthenticationException e) {
+        } catch (JwtAuthenticationException e) {
             res.setStatus(e.getHttpStatus());
             res.setContentType("application/json");
             res.getWriter().write(String.format("{\"error\": \"%s\"}", e.getMessage()));

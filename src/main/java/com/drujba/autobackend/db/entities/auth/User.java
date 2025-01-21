@@ -42,11 +42,14 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @Column(name = "is_verified", nullable = true)
-    private Boolean is_verified = false;
+    private Boolean isVerified = false;
+
+    private Boolean isActive;
 
     public User(UserDto userDto) {
         this.roles = new HashSet<>();
         this.email = userDto.getEmail();
+        isActive = true;
         this.password = PasswordEncoder.getInstance().encode(userDto.getPassword());
     }
 
