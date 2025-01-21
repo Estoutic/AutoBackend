@@ -1,7 +1,9 @@
 package com.drujba.autobackend.configs.auth;
 
+import com.drujba.autobackend.exceptions.auth.JwtAuthenticationException;
 import com.drujba.autobackend.models.dto.auth.AuthorityDto;
 import com.drujba.autobackend.models.dto.auth.UserDetailsDto;
+import com.drujba.autobackend.services.auth.IAuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
@@ -34,6 +36,12 @@ public class TokenProvider implements Serializable {
 
     @Value("${jwt.authorities.key}")
     public String AUTHORITIES_KEY;
+
+    private final IAuthService authService;
+
+    public TokenProvider(IAuthService authService) {
+        this.authService = authService;
+    }
 
     public UserDetailsDto getUserDetailsFromToken(String token) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -70,6 +78,9 @@ public class TokenProvider implements Serializable {
     }
 
     public String generateToken(String email, Collection<? extends GrantedAuthority> authorities) {
+        if (!authService.checkActive(email)){
+            throw new JwtAuthenticationException(String.format("User %s is not active",email),403);
+        }
         String roles = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -101,6 +112,7 @@ public class TokenProvider implements Serializable {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final UserDetailsDto details = getUserDetailsFromToken(token);
+
         return (details.getUsername().equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 

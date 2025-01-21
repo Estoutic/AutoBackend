@@ -2,6 +2,7 @@ package com.drujba.autobackend.configs.auth;
 
 import com.drujba.autobackend.exceptions.auth.JwtAuthenticationException;
 import com.drujba.autobackend.models.dto.auth.UserDetailsDto;
+import com.drujba.autobackend.services.auth.IAuthService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import jakarta.annotation.Resource;
@@ -9,6 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Resource(name = "userService")
     private UserDetailsService userDetailsService;
 
+//    private final IAuthService authService;
     @Autowired
     private TokenProvider jwtTokenUtil;
 
@@ -84,8 +87,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (details != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//                if (!authService.checkActive(details.getUsername())) {
+//                    return;
+//                }
                 UserDetails userDetails = userDetailsService.loadUserByUsername(details.getUsername());
-
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthenticationToken(authToken, SecurityContextHolder.getContext().getAuthentication(), userDetails);
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));

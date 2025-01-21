@@ -22,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -57,22 +58,27 @@ public class AuthService implements IAuthService, UserDetailsService {
         }
 
         User user = new User(userDto);
-
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        Role role = roleService.findByName("MANAGER");
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(role);
 
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(emailRegex);
         if (!pattern.matcher(email).matches()) {
             throw new InvalidEmailInputException(email);
         }
-        if (user.getEmail().split("@")[1].equals("admin.ru")) {
-            role = roleService.findByName("ADMIN");
-            roleSet.add(role);
+
+        Set<Role> roleSet = new HashSet<>();
+        if (userDto.getRoles() != null && !userDto.getRoles().isEmpty()) {
+            List<String> roles = userDto.getRoles();
+            if (roles.contains("ADMIN")) {
+                roleSet.add(roleService.findByName("ADMIN"));
+            }
+            roleSet.add(roleService.findByName("MANAGER"));
         }
+
+//        if (user.getEmail().split("@")[1].equals("admin.ru")) {
+//            role = roleService.findByName("ADMIN");
+//            roleSet.add(role);
+//        }
 
         user.setRoles(roleSet);
         return userRepository.save(user).getId();
@@ -80,7 +86,7 @@ public class AuthService implements IAuthService, UserDetailsService {
 
     @Override
     @Transactional
-    public UUID saveSuperAdmin(UserDto userDto){
+    public UUID saveSuperAdmin(UserDto userDto) {
         User user = new User(userDto);
 
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -111,5 +117,11 @@ public class AuthService implements IAuthService, UserDetailsService {
     @Override
     public Boolean existsUserByEmail(String email) {
         return userRepository.existsUserByEmail(email);
+    }
+
+    @Override
+    public Boolean checkActive(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserDoesNotExistException(email));
+        return user.getIsActive();
     }
 }

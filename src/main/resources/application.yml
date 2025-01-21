@@ -42,3 +42,7 @@ minio:
   accessKey: admin
   secretKey: admin12345
   bucket: images-bucket
+
+admin:
+  mail: ${ADMIN_MAIL}
+  password: ${ADMIN_PASSWORD}

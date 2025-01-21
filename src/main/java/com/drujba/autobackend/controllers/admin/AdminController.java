@@ -3,6 +3,7 @@ package com.drujba.autobackend.controllers.admin;
 import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.services.admin.IAdminService;
 import com.drujba.autobackend.services.auth.IAuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +27,7 @@ public class AdminController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PutMapping("/user/{id}/deactivate")
-    public ResponseEntity<Void> deactivateUser(@PathVariable UUID id) {
+    public ResponseEntity<Void> deactivateUser(@PathVariable UUID id, HttpServletRequest request) {
         adminService.deactivateEmployee(id);
         return ResponseEntity.noContent().build();
     }

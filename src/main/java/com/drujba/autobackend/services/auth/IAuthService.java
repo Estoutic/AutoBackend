@@ -16,4 +16,6 @@ public interface IAuthService {
     User getUserByEmail(String email);
 
     Boolean existsUserByEmail(String email);
+
+    Boolean checkActive(String email);
 }
