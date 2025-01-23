@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.repostiories.translation;
+package com.drujba.autobackend.db.repositories.translation;
 
 import com.drujba.autobackend.db.entities.translation.CarModelTranslation;
 import org.springframework.data.jpa.repository.JpaRepository;

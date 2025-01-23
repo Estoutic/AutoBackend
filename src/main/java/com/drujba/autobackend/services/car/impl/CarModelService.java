@@ -1,7 +1,7 @@
 package com.drujba.autobackend.services.car.impl;
 
 import com.drujba.autobackend.db.entities.car.CarModel;
-import com.drujba.autobackend.db.repostiories.car.CarModelRepository;
+import com.drujba.autobackend.db.repositories.car.CarModelRepository;
 import com.drujba.autobackend.exceptions.car.CarModelAlreadyExistException;
 import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
 import com.drujba.autobackend.models.dto.car.CarModelDto;

@@ -22,5 +22,7 @@ public interface ICarService {
 
     List<CarDto> getAllCars();
 
+    void hideCar(UUID id);
+
     Page<CarDto> getFilteredCars(CarFilterDto carFilterDto, Pageable pageable);
 }

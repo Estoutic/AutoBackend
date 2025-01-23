@@ -1,15 +1,15 @@
-package com.drujba.autobackend.services.image.impl;
+package com.drujba.autobackend.services.file.impl;
 
 import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.db.entities.car.Image;
-import com.drujba.autobackend.db.repostiories.car.CarRepository;
-import com.drujba.autobackend.db.repostiories.car.ImageRepository;
+import com.drujba.autobackend.db.repositories.car.CarRepository;
+import com.drujba.autobackend.db.repositories.car.ImageRepository;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.ImageDoestNotExistException;
 import com.drujba.autobackend.models.dto.car.ImageDto;
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
-import com.drujba.autobackend.services.image.IImageService;
-import com.drujba.autobackend.services.image.IMinioService;
+import com.drujba.autobackend.services.file.IImageService;
+import com.drujba.autobackend.services.file.IMinioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

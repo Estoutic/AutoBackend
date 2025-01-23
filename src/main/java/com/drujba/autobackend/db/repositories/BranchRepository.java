@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.repostiories;
+package com.drujba.autobackend.db.repositories;
 
 import com.drujba.autobackend.db.entities.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;

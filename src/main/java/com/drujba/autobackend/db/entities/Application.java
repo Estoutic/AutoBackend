@@ -32,6 +32,9 @@ public class Application {
     @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 
+    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL)
+    private Report report;
+
     private String firstName;
     private String lastName;
 
@@ -54,5 +57,6 @@ public class Application {
         this.car = car;
         this.branch = branch;
         this.status = ApplicationStatus.ACCEPTED;
+        this.report = null;
     }
 }

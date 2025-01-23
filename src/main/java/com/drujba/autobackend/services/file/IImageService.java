@@ -1,4 +1,4 @@
-package com.drujba.autobackend.services.image;
+package com.drujba.autobackend.services.file;
 
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
 

@@ -2,8 +2,8 @@ package com.drujba.autobackend.services.auth.impl;
 
 import com.drujba.autobackend.db.entities.auth.RefreshToken;
 import com.drujba.autobackend.db.entities.auth.User;
-import com.drujba.autobackend.db.repostiories.auth.RefreshTokenRepository;
-import com.drujba.autobackend.db.repostiories.auth.UserRepository;
+import com.drujba.autobackend.db.repositories.auth.RefreshTokenRepository;
+import com.drujba.autobackend.db.repositories.auth.UserRepository;
 import com.drujba.autobackend.exceptions.auth.TokenRefreshException;
 import com.drujba.autobackend.services.auth.IRefreshTokenService;
 import lombok.RequiredArgsConstructor;

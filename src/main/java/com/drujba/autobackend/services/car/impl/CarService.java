@@ -2,8 +2,8 @@ package com.drujba.autobackend.services.car.impl;
 
 import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.db.entities.car.CarModel;
-import com.drujba.autobackend.db.repostiories.car.CarModelRepository;
-import com.drujba.autobackend.db.repostiories.car.CarRepository;
+import com.drujba.autobackend.db.repositories.car.CarModelRepository;
+import com.drujba.autobackend.db.repositories.car.CarRepository;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
 import com.drujba.autobackend.models.dto.car.*;
@@ -99,6 +99,13 @@ public class CarService implements ICarService {
     @Override
     public List<CarDto> getAllCars() {
         return carRepository.findAll().stream().map(CarDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public void hideCar(UUID id) {
+        Car car = carRepository.findById(id).orElseThrow(() -> new CarDoesNotExistException(id.toString()));
+        car.setAvailable(false);
+        carRepository.save(car);
     }
 
     @Override
@@ -231,7 +238,7 @@ public class CarService implements ICarService {
 
         // Применение спецификаций и возврат результатов
         Page<Car> cars = carRepository.findAll(spec, pageable);
-        return cars.map(CarDto::new);
+        return (Page<CarDto>) cars.stream().filter(car -> car.isAvailable()).map(CarDto::new);
     }
 
 }

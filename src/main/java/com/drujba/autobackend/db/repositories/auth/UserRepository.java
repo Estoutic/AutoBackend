@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.repostiories.auth;
+package com.drujba.autobackend.db.repositories.auth;
 
 import com.drujba.autobackend.db.entities.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;

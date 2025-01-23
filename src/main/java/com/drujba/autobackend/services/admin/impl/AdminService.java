@@ -1,7 +1,7 @@
 package com.drujba.autobackend.services.admin.impl;
 
 import com.drujba.autobackend.db.entities.auth.User;
-import com.drujba.autobackend.db.repostiories.auth.UserRepository;
+import com.drujba.autobackend.db.repositories.auth.UserRepository;
 import com.drujba.autobackend.exceptions.auth.UserDoesNotExistException;
 import com.drujba.autobackend.services.admin.IAdminService;
 import lombok.RequiredArgsConstructor;

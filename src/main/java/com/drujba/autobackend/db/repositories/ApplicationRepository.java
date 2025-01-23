@@ -1,4 +1,4 @@
-package com.drujba.autobackend.db.repostiories;
+package com.drujba.autobackend.db.repositories;
 
 import com.drujba.autobackend.db.entities.Application;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;

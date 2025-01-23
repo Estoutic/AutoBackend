@@ -2,7 +2,7 @@ package com.drujba.autobackend.services.branch.impl;
 
 
 import com.drujba.autobackend.db.entities.Branch;
-import com.drujba.autobackend.db.repostiories.BranchRepository;
+import com.drujba.autobackend.db.repositories.BranchRepository;
 import com.drujba.autobackend.exceptions.branch.BranchDoesNotExistException;
 import com.drujba.autobackend.models.dto.branch.BranchCreationDto;
 import com.drujba.autobackend.models.dto.branch.BranchDto;

@@ -5,6 +5,7 @@ import com.drujba.autobackend.models.dto.branch.BranchDto;
 import com.drujba.autobackend.services.branch.IBranchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +18,13 @@ public class BranchController {
 
     private final IBranchService branchService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping
     public ResponseEntity<UUID> createBranch(@RequestBody BranchCreationDto branchCreationDTO) {
         return ResponseEntity.status(201).body(branchService.saveBranch(branchCreationDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBranch(@PathVariable UUID id) {
         branchService.deleteBranch(id);

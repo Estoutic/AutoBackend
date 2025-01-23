@@ -3,16 +3,18 @@ package com.drujba.autobackend.services.application.impl;
 import com.drujba.autobackend.db.entities.Application;
 import com.drujba.autobackend.db.entities.Branch;
 import com.drujba.autobackend.db.entities.car.Car;
-import com.drujba.autobackend.db.repostiories.ApplicationRepository;
-import com.drujba.autobackend.db.repostiories.BranchRepository;
-import com.drujba.autobackend.db.repostiories.car.CarRepository;
+import com.drujba.autobackend.db.repositories.ApplicationRepository;
+import com.drujba.autobackend.db.repositories.BranchRepository;
+import com.drujba.autobackend.db.repositories.car.CarRepository;
 import com.drujba.autobackend.exceptions.application.ApplicationDoesNotExistException;
 import com.drujba.autobackend.exceptions.branch.BranchDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
+import com.drujba.autobackend.services.admin.IReportService;
 import com.drujba.autobackend.services.application.IApplicationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,7 @@ public class ApplicationService implements IApplicationService {
     private final ApplicationRepository applicationRepository;
     private final CarRepository carRepository;
     private final BranchRepository branchRepository;
+    private final IReportService reportService;
 
     @Override
     public UUID saveApplication(ApplicationCreationDto applicationCreationDto) {
@@ -47,9 +50,13 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
+    @Transactional
     public void updateApplicationStatus(UUID applicationId, ApplicationStatus status) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationDoesNotExistException(applicationId.toString()));
+        if (status == ApplicationStatus.COMPLETED) {
+            reportService.generateReport(applicationId);
+        }
         application.setStatus(status);
         applicationRepository.save(application);
     }

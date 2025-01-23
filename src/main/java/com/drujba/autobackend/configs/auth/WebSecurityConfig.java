@@ -4,6 +4,7 @@ package com.drujba.autobackend.configs.auth;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -41,13 +42,46 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
+                        // Swagger доступен всем
                         .requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/webjars/**").permitAll()
-                        .requestMatchers("/admin/user/**").hasAnyRole("ADMIN","SUPERADMIN" )
+
+                        // Права на маршруты AdminController
                         .requestMatchers("/admin/user/create").hasRole("SUPERADMIN")
+                        .requestMatchers("/admin/user/**").hasAnyRole("ADMIN", "SUPERADMIN")
+
+                        // Права на маршруты ApplicationController
+                        .requestMatchers(HttpMethod.POST, "/application").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/application/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/application/**").hasAnyRole("MANAGER", "ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.GET, "/application/**").hasAnyRole("MANAGER", "ADMIN", "SUPERADMIN")
+
+                        // Права на маршруты CarController
+                        .requestMatchers(HttpMethod.POST, "/car").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/car/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/car/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.GET, "/car/**").permitAll()
+
+                        // Права на маршруты CarModelController
+                        .requestMatchers(HttpMethod.POST, "/car/model").hasAnyRole("MANAGER", "ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/car/model/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/car/model/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.GET, "/car/model/**").permitAll()
+
+                        // Права на маршруты ImageController
+                        .requestMatchers(HttpMethod.POST, "/car/image/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/car/image/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.GET, "/car/image/**").permitAll()
+
+                        // Права на маршруты BranchController
+                        .requestMatchers(HttpMethod.POST, "/branch").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/branch/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.GET, "/branch/**").permitAll()
+
+                        // Любые другие запросы разрешены всем
                         .anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))

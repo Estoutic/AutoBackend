@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,17 +24,19 @@ public class CarController {
 
     private final ICarService carService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping()
     public ResponseEntity<UUID> addCar(@RequestBody CarCreationDto carCreationDto) {
         return ResponseEntity.ok(carService.saveCar(carCreationDto));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable UUID id) {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateCar(@PathVariable UUID id, @RequestBody CarUpdateDto carUpdateDto){
         carService.updateCar(id, carUpdateDto);

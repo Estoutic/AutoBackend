@@ -2,9 +2,10 @@ package com.drujba.autobackend.controllers.car;
 
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
 import com.drujba.autobackend.models.dto.car.UploadImageRequest;
-import com.drujba.autobackend.services.image.IImageService;
+import com.drujba.autobackend.services.file.IImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class ImageController {
 
     private final IImageService imageService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping("/{id}")
     public ResponseEntity<UUID> uploadImage(@PathVariable("id") UUID id,
                                             @ModelAttribute UploadImageRequest request) {
@@ -30,11 +32,13 @@ public class ImageController {
         }
     }
 
+
     @GetMapping("/{id}/all")
     public ResponseEntity<ImageResponseDto> getAllImages(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(imageService.getImagesByCarId(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping("/{id}/photo/{photoId}")
     public ResponseEntity<Void> deleteImage(@PathVariable("id") UUID id, @PathVariable("photoId") UUID photoId) {
         imageService.deleteImage(id, photoId);

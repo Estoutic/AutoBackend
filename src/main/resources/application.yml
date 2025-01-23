@@ -41,7 +41,9 @@ minio:
   url: http://213.183.45.128:9000
   accessKey: admin
   secretKey: admin12345
-  bucket: images-bucket
+  buckets:
+    image: images-bucket
+    reports: reports-bucket
 
 admin:
   mail: ${ADMIN_MAIL}
