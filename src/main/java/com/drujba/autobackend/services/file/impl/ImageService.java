@@ -8,6 +8,7 @@ import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.ImageDoestNotExistException;
 import com.drujba.autobackend.models.dto.car.ImageDto;
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
+import com.drujba.autobackend.models.enums.BucketType;
 import com.drujba.autobackend.services.file.IImageService;
 import com.drujba.autobackend.services.file.IMinioService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class ImageService implements IImageService {
         Car car = carRepository.findById(carId).orElseThrow(() -> new CarDoesNotExistException(carId.toString()));
         Image image = new Image(car);
         imageRepository.save(image);
-        String path = minioService.uploadFile(image.getId().toString(), inputStream, contentType);
+        String path = minioService.uploadFile(BucketType.IMAGE, image.getId().toString(), inputStream, contentType);
         image.setFilePath(String.format("%s%s", path, image.getId()));
         return imageRepository.save(image).getId();
     }
@@ -56,7 +57,7 @@ public class ImageService implements IImageService {
             throw new RuntimeException("Image does not belong to the specified car");
         }
         String fileName = image.getFilePath().substring(image.getFilePath().lastIndexOf('/') + 1);
-        minioService.deleteFile(fileName);
+        minioService.deleteFile(BucketType.IMAGE, fileName);
         imageRepository.delete(image);
     }
 }

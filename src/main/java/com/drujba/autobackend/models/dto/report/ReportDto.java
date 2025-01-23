@@ -1,4 +1,4 @@
-package com.drujba.autobackend.models.dto;
+package com.drujba.autobackend.models.dto.report;
 
 import com.drujba.autobackend.db.entities.Report;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;

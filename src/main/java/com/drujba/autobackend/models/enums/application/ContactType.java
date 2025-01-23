@@ -6,8 +6,8 @@ import java.util.ResourceBundle;
 public enum ContactType {
     CALL,
     EMAIL,
-    VK,
-    TG;
+    WHATSAPP,
+    TELEGRAM;
 
     public String getLocalizedValue(Locale locale) {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);

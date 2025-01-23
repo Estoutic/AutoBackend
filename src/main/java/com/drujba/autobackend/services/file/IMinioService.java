@@ -1,12 +1,15 @@
 package com.drujba.autobackend.services.file;
 
+import com.drujba.autobackend.models.enums.BucketType;
+import lombok.SneakyThrows;
+
 import java.io.InputStream;
 
 public interface IMinioService {
 
-    String uploadFile(String fileName, InputStream inputStream, String contentType);
+    @SneakyThrows
+    String uploadFile(BucketType bucketType, String fileName, InputStream inputStream, String contentType);
 
-    String uploadReport(String fileName, InputStream inputStream, String contentType);
-
-    void deleteFile(String fileName);
+    @SneakyThrows
+    void deleteFile(BucketType bucketType, String fileName);
 }

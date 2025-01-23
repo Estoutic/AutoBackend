@@ -1,5 +1,6 @@
 package com.drujba.autobackend.services.file.impl;
 
+import com.drujba.autobackend.models.enums.BucketType;
 import com.drujba.autobackend.services.file.IMinioService;
 import io.minio.*;
 import lombok.RequiredArgsConstructor;
@@ -26,50 +27,45 @@ public class MinioService implements IMinioService {
 
     @SneakyThrows
     @Override
-    public String uploadFile(String fileName, InputStream inputStream, String contentType) {
-        boolean isBucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(imageBucketName).build());
-        if (!isBucketExists) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(imageBucketName).build());
-        }
+    public String uploadFile(BucketType bucketType, String fileName, InputStream inputStream, String contentType) {
+        String bucketName = getBucketName(bucketType);
+
+        ensureBucketExists(bucketName);
 
         minioClient.putObject(PutObjectArgs.builder()
-                .bucket(imageBucketName)
+                .bucket(bucketName)
                 .object(fileName)
                 .stream(inputStream, -1, 10485760)
                 .contentType(contentType)
                 .build());
 
-        return String.format("%s/%s/", minioUrl, imageBucketName);
+        return String.format("%s/%s/%s", minioUrl, bucketName, fileName);
     }
-
-//    TODO оптимизировать???
 
     @SneakyThrows
     @Override
-    public String uploadReport(String fileName, InputStream inputStream, String contentType) {
-        boolean isBucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(reportsBucketName).build());
-        if (!isBucketExists) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(reportsBucketName).build());
-        }
+    public void deleteFile(BucketType bucketType, String fileName) {
+        String bucketName = getBucketName(bucketType);
 
-        minioClient.putObject(PutObjectArgs.builder()
-                .bucket(reportsBucketName)
+        minioClient.removeObject(RemoveObjectArgs.builder()
+                .bucket(bucketName)
                 .object(fileName)
-                .stream(inputStream, -1, 10485760)
-                .contentType(contentType)
                 .build());
-
-        return String.format("%s/%s/", minioUrl, reportsBucketName);
     }
 
-    @Override
+    private String getBucketName(BucketType bucketType) {
+        return switch (bucketType) {
+            case IMAGE -> imageBucketName;
+            case REPORT -> reportsBucketName;
+            default -> throw new IllegalArgumentException("Unknown bucket type: " + bucketType);
+        };
+    }
+
     @SneakyThrows
-    public void deleteFile(String fileName) {
-        minioClient.removeObject(
-                RemoveObjectArgs.builder()
-                        .bucket(imageBucketName)
-                        .object(fileName)
-                        .build()
-        );
+    private void ensureBucketExists(String bucketName) {
+        boolean isBucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        if (!isBucketExists) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+        }
     }
 }
