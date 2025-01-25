@@ -5,6 +5,7 @@ import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
 import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class ReportDto {
 
     private UserDto user;
 
+    @JsonManagedReference
     private ApplicationDto application;
 
     private String name;
@@ -37,4 +39,14 @@ public class ReportDto {
         this.id = report.getId();
         this.createdAt = report.getCreatedAt();
     }
+
+    public ReportDto(Report report, ApplicationDto application) {
+        this.filePath = report.getFilePath();
+        this.name = report.getName();
+        this.application = application;
+        this.user = user;
+        this.id = report.getId();
+        this.createdAt = report.getCreatedAt();
+    }
+
 }

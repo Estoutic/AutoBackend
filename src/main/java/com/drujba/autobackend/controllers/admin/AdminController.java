@@ -4,7 +4,7 @@ import com.drujba.autobackend.models.dto.report.ReportDto;
 import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.models.dto.report.ReportFilterDto;
 import com.drujba.autobackend.services.admin.IAdminService;
-import com.drujba.autobackend.services.admin.IReportService;
+import com.drujba.autobackend.services.file.IReportService;
 import com.drujba.autobackend.services.auth.IAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +37,13 @@ public class AdminController {
     @PutMapping("/user/{id}/deactivate")
     public ResponseEntity<Void> deactivateUser(@PathVariable UUID id, HttpServletRequest request) {
         adminService.deactivateEmployee(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @DeleteMapping("report/{id}")
+    public ResponseEntity<Void> deleteReport(@PathVariable UUID id) {
+        reportService.deleteReport(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -33,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Resource(name = "userService")
     private UserDetailsService userDetailsService;
 
-//    private final IAuthService authService;
     @Autowired
     private TokenProvider jwtTokenUtil;
 
@@ -100,7 +99,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
 
-            chain.doFilter(req, res);
+            chain. doFilter(req, res);
         } catch (JwtAuthenticationException e) {
             res.setStatus(e.getHttpStatus());
             res.setContentType("application/json");

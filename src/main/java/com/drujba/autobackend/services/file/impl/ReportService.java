@@ -1,4 +1,4 @@
-package com.drujba.autobackend.services.admin.impl;
+package com.drujba.autobackend.services.file.impl;
 
 import com.drujba.autobackend.db.entities.Application;
 import com.drujba.autobackend.db.entities.Report;
@@ -11,7 +11,7 @@ import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.models.dto.report.ReportDto;
 import com.drujba.autobackend.models.dto.report.ReportFilterDto;
 import com.drujba.autobackend.models.enums.BucketType;
-import com.drujba.autobackend.services.admin.IReportService;
+import com.drujba.autobackend.services.file.IReportService;
 import com.drujba.autobackend.services.auth.IAuthService;
 import com.drujba.autobackend.services.file.IMinioService;
 import jakarta.persistence.criteria.Predicate;
@@ -89,6 +89,17 @@ public class ReportService implements IReportService {
         Report report = reportRepository.findById(id).orElseThrow(() -> new ReportDoesNotExist(id.toString()));
         return report.getFilePath();
     }
+
+    @Override
+    public void deleteReport(UUID id) {
+        Report report = reportRepository.findById(id).orElseThrow(() -> new ReportDoesNotExist(id.toString()));
+        String fileName = report.getFilePath().substring(report.getFilePath().lastIndexOf('/') + 1);
+
+        minioService.deleteFile(BucketType.REPORT, fileName);
+        reportRepository.deleteById(id);
+    }
+
+//  TODO разобратсья почему не удаляются
 
     private byte[] createExcelReport(Application application) {
         try (Workbook workbook = new XSSFWorkbook()) {

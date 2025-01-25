@@ -5,8 +5,10 @@ import com.drujba.autobackend.db.entities.Branch;
 import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.models.dto.branch.BranchDto;
 import com.drujba.autobackend.models.dto.car.CarDto;
+import com.drujba.autobackend.models.dto.report.ReportDto;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import com.drujba.autobackend.models.enums.application.ContactType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -24,6 +26,9 @@ public class ApplicationDto {
     private CarDto car;
 
     private BranchDto branch;
+
+    @JsonBackReference
+    private ReportDto report;
 
     private String firstName;
     private String lastName;
@@ -46,5 +51,6 @@ public class ApplicationDto {
         this.status = application.getStatus();
         this.createdAt = application.getCreatedAt();
         this.updatedAt = application.getUpdatedAt();
+        this.report = new ReportDto(application.getReport(),this);
     }
 }

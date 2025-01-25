@@ -1,4 +1,4 @@
-package com.drujba.autobackend.services.admin;
+package com.drujba.autobackend.services.file;
 
 import com.drujba.autobackend.models.dto.report.ReportDto;
 import com.drujba.autobackend.models.dto.report.ReportFilterDto;
@@ -14,5 +14,7 @@ public interface IReportService {
     Page<ReportDto> getFilteredReports(ReportFilterDto filterDto, Pageable pageable);
 
     String getReportDownloadLink(UUID id);
+
+    void deleteReport(UUID id);
 
 }

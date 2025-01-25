@@ -12,7 +12,7 @@ import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
-import com.drujba.autobackend.services.admin.IReportService;
+import com.drujba.autobackend.services.file.IReportService;
 import com.drujba.autobackend.services.application.IApplicationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
