@@ -45,4 +45,6 @@ public class CarCreationDto {
     private Integer seatsCount;
 
     private BigDecimal price;
+
+    private String vin;
 }

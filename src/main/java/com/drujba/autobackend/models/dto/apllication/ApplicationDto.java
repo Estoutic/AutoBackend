@@ -51,6 +51,6 @@ public class ApplicationDto {
         this.status = application.getStatus();
         this.createdAt = application.getCreatedAt();
         this.updatedAt = application.getUpdatedAt();
-        this.report = new ReportDto(application.getReport(),this);
+        this.report = new ReportDto(application.getReport(),application.getReport().getApplications());
     }
 }

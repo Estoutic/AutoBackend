@@ -27,8 +27,11 @@ public class Car {
     private CarModel carModel;
 
     private int year;
+
     private String color;
+
     private int mileage;
+
     private int ownersCount;
 
     @Enumerated(EnumType.STRING)
@@ -51,8 +54,13 @@ public class Car {
     private SteeringPosition steeringPosition;
 
     private int seatsCount;
+
     private double price;
+
     private String description;
+
+    @Column(nullable = false, unique = true, length = 17)
+    private String vin;
 
     @Column(name = "is_available")
     private boolean isAvailable;
@@ -76,6 +84,7 @@ public class Car {
         this.seatsCount = dto.getSeatsCount() != null ? dto.getSeatsCount() : 0;
         this.price = dto.getPrice() != null ? dto.getPrice().doubleValue() : 0.0;
         this.description = dto.getDescription();
+        this.vin = dto.getVin();
         this.isAvailable = true;
     }
 }

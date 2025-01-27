@@ -40,9 +40,6 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports;
-
     @Column(name = "is_verified", nullable = true)
     private Boolean isVerified = false;
 
@@ -50,14 +47,8 @@ public class User {
 
     public User(UserDto userDto) {
         this.roles = new HashSet<>();
-        this.reports = new ArrayList<>();
         this.email = userDto.getEmail();
         isActive = true;
         this.password = PasswordEncoder.getInstance().encode(userDto.getPassword());
     }
-
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
-
 }

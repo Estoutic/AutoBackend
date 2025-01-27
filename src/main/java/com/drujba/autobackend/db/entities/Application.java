@@ -32,7 +32,8 @@ public class Application {
     @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 
-    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "report_id")
     private Report report;
 
     private String firstName;
@@ -40,6 +41,8 @@ public class Application {
 
     @Enumerated(EnumType.STRING)
     private ContactType contact;
+
+    private String contactDetails;
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
@@ -54,6 +57,7 @@ public class Application {
         this.firstName = applicationCreationDto.getFirstName();
         this.lastName = applicationCreationDto.getLastName();
         this.contact = applicationCreationDto.getContact();
+        this.contactDetails = applicationCreationDto.getContactDetails();
         this.car = car;
         this.branch = branch;
         this.status = ApplicationStatus.ACCEPTED;

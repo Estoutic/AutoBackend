@@ -12,6 +12,7 @@ import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
+import com.drujba.autobackend.models.enums.application.ContactType;
 import com.drujba.autobackend.services.file.IReportService;
 import com.drujba.autobackend.services.application.IApplicationService;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,7 @@ public class ApplicationService implements IApplicationService {
 
     @Override
     public UUID saveApplication(ApplicationCreationDto applicationCreationDto) {
+        validateContactDetails(applicationCreationDto.getContact(), applicationCreationDto.getContactDetails());
         Car car = carRepository.findById(applicationCreationDto.getCarId()).orElseThrow(()
                 -> new CarDoesNotExistException(applicationCreationDto.getCarId().toString()));
         Branch branch = branchRepository.findById(applicationCreationDto.getBranchId()).orElseThrow(() ->
@@ -78,5 +80,15 @@ public class ApplicationService implements IApplicationService {
     public Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status) {
         return applicationRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable)
                 .map(ApplicationDto::new);
+    }
+
+    public void validateContactDetails(ContactType contactType, String contactDetails) {
+        if (contactType == ContactType.CALL && !contactDetails.matches("\\+\\d{1,15}")) {
+            throw new IllegalArgumentException("Invalid phone number format for CALL contact type.");
+        } else if ((contactType == ContactType.EMAIL && !contactDetails.matches("^[\\w-.]+@[\\w-]+\\.[a-z]{2,}$"))) {
+            throw new IllegalArgumentException("Invalid email format for EMAIL contact type.");
+        } else if ((contactType == ContactType.WHATSAPP || contactType == ContactType.TELEGRAM) && contactDetails.isBlank()) {
+            throw new IllegalArgumentException("Username is required for WHATSAPP or TELEGRAM contact type.");
+        }
     }
 }

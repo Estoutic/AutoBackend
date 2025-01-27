@@ -1,5 +1,6 @@
 package com.drujba.autobackend.models.dto.report;
 
+import com.drujba.autobackend.db.entities.Application;
 import com.drujba.autobackend.db.entities.Report;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
 import com.drujba.autobackend.models.dto.auth.UserDto;
@@ -10,7 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -20,10 +23,8 @@ public class ReportDto {
 
     private UUID id;
 
-    private UserDto user;
-
     @JsonManagedReference
-    private ApplicationDto application;
+    private List<Application> applications;
 
     private String name;
 
@@ -34,17 +35,15 @@ public class ReportDto {
     public ReportDto(Report report) {
         this.filePath = report.getFilePath();
         this.name = report.getName();
-        this.application = new ApplicationDto(report.getApplication());
-        this.user = new UserDto(report.getUser());
+        this.applications = report.getApplications();
         this.id = report.getId();
         this.createdAt = report.getCreatedAt();
     }
 
-    public ReportDto(Report report, ApplicationDto application) {
+    public ReportDto(Report report, List<Application> applications) {
         this.filePath = report.getFilePath();
         this.name = report.getName();
-        this.application = application;
-        this.user = user;
+        this.applications = applications;
         this.id = report.getId();
         this.createdAt = report.getCreatedAt();
     }

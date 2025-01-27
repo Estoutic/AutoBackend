@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 @Service
@@ -51,6 +52,20 @@ public class MinioService implements IMinioService {
                 .bucket(bucketName)
                 .object(fileName)
                 .build());
+    }
+
+    @Override
+    public ByteArrayInputStream downloadFile(BucketType bucketType, String filePath) {
+        try {
+            return new ByteArrayInputStream(minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(getBucketName(bucketType))
+                            .object(filePath)
+                            .build()
+            ).readAllBytes());
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при загрузке файла из MinIO: " + filePath, e);
+        }
     }
 
     private String getBucketName(BucketType bucketType) {

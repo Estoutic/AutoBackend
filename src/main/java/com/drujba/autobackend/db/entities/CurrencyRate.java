@@ -1,6 +1,6 @@
 package com.drujba.autobackend.db.entities;
 
-import com.drujba.autobackend.models.enums.CurrencyCode;
+import com.drujba.autobackend.models.enums.calculate.CurrencyCode;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
