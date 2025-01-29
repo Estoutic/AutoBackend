@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.car;
 
+import com.drujba.autobackend.exceptions.minio.UploadImageException;
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
 import com.drujba.autobackend.models.dto.car.UploadImageRequest;
 import com.drujba.autobackend.services.file.IImageService;
@@ -28,7 +29,7 @@ public class ImageController {
                     request.getFile().getInputStream(),
                     request.getFile().getContentType()));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UploadImageException(e);
         }
     }
 

@@ -25,7 +25,7 @@ import java.util.UUID;
 public class CarController {
 
     private final ICarService carService;
-    private final ITranslationService  translationService;
+    private final ITranslationService translationService;
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping()
@@ -43,7 +43,7 @@ public class CarController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateCar(@PathVariable UUID id, @RequestBody CarUpdateDto carUpdateDto){
+    public ResponseEntity<Void> updateCar(@PathVariable UUID id, @RequestBody CarUpdateDto carUpdateDto) {
         carService.updateCar(id, carUpdateDto);
         return ResponseEntity.noContent().build();
     }

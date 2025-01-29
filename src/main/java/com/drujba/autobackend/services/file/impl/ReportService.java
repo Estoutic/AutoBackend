@@ -7,6 +7,7 @@ import com.drujba.autobackend.db.repositories.ApplicationRepository;
 import com.drujba.autobackend.db.repositories.ReportRepository;
 import com.drujba.autobackend.exceptions.application.ApplicationDoesNotExistException;
 import com.drujba.autobackend.exceptions.application.ReportDoesNotExist;
+import com.drujba.autobackend.exceptions.minio.UpdateFileException;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
 import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.models.dto.report.ReportDto;
@@ -122,7 +123,7 @@ public class ReportService implements IReportService {
                 return outputStream.toByteArray();
             }
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка при обновлении Excel файла", e);
+            throw new UpdateFileException(report.getFilePath(), e);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.drujba.autobackend.services.file.impl;
 
+import com.drujba.autobackend.exceptions.minio.DownloadFileException;
 import com.drujba.autobackend.models.enums.BucketType;
 import com.drujba.autobackend.services.file.IMinioService;
 import io.minio.*;
@@ -64,7 +65,7 @@ public class MinioService implements IMinioService {
                             .build()
             ).readAllBytes());
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка при загрузке файла из MinIO: " + filePath, e);
+            throw new DownloadFileException(filePath, e);
         }
     }
 

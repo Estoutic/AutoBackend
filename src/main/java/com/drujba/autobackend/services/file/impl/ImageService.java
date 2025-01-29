@@ -5,6 +5,7 @@ import com.drujba.autobackend.db.entities.car.Image;
 import com.drujba.autobackend.db.repositories.car.CarRepository;
 import com.drujba.autobackend.db.repositories.car.ImageRepository;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
+import com.drujba.autobackend.exceptions.car.ImageDoesNotBelongException;
 import com.drujba.autobackend.exceptions.car.ImageDoestNotExistException;
 import com.drujba.autobackend.models.dto.car.ImageDto;
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
@@ -54,7 +55,7 @@ public class ImageService implements IImageService {
                 .orElseThrow(() -> new ImageDoestNotExistException(imageId.toString()));
 
         if (!image.getCar().getId().equals(carId)) {
-            throw new RuntimeException("Image does not belong to the specified car");
+            throw new ImageDoesNotBelongException(imageId.toString());
         }
         String fileName = image.getFilePath().substring(image.getFilePath().lastIndexOf('/') + 1);
         minioService.deleteFile(BucketType.IMAGE, fileName);

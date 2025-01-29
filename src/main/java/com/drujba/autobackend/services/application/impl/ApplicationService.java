@@ -7,6 +7,7 @@ import com.drujba.autobackend.db.repositories.ApplicationRepository;
 import com.drujba.autobackend.db.repositories.BranchRepository;
 import com.drujba.autobackend.db.repositories.car.CarRepository;
 import com.drujba.autobackend.exceptions.application.ApplicationDoesNotExistException;
+import com.drujba.autobackend.exceptions.application.StatusAlreadySetException;
 import com.drujba.autobackend.exceptions.branch.BranchDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
@@ -57,7 +58,7 @@ public class ApplicationService implements IApplicationService {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationDoesNotExistException(applicationId.toString()));
         if (application.getStatus() == status) {
-            throw new RuntimeException("status is already set to " + status.toString());
+            throw new StatusAlreadySetException(status.toString(), applicationId.toString());
         }
         if (status == ApplicationStatus.COMPLETED) {
             reportService.generateReport(applicationId);
