@@ -4,17 +4,19 @@ import com.drujba.autobackend.models.dto.car.CarCreationDto;
 import com.drujba.autobackend.models.dto.car.CarDto;
 import com.drujba.autobackend.models.dto.car.CarFilterDto;
 import com.drujba.autobackend.models.dto.car.CarUpdateDto;
+import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
 import com.drujba.autobackend.services.car.ICarService;
+import com.drujba.autobackend.services.translation.ITranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +25,7 @@ import java.util.UUID;
 public class CarController {
 
     private final ICarService carService;
+    private final ITranslationService  translationService;
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping()
@@ -36,6 +39,8 @@ public class CarController {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
     }
+
+
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateCar(@PathVariable UUID id, @RequestBody CarUpdateDto carUpdateDto){

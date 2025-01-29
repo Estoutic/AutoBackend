@@ -57,4 +57,14 @@ public class CarExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(CarTranslationDoesNotExistException.class)
+    public ResponseEntity<ErrorResponse> handleCarTranslationDoesNotExistException(CarTranslationDoesNotExistException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Not Found",
+                exception.getMessage(),
+                HttpStatus.NOT_FOUND.value()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }

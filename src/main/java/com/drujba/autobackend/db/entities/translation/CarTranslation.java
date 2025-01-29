@@ -2,6 +2,8 @@ package com.drujba.autobackend.db.entities.translation;
 
 
 import com.drujba.autobackend.db.entities.car.Car;
+import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
+import com.drujba.autobackend.models.enums.Locale;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,8 @@ public class CarTranslation {
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
-    private String locale;
+    @Enumerated(EnumType.STRING)
+    private Locale locale;
 
     private String color;
 
@@ -33,4 +36,13 @@ public class CarTranslation {
     private int mileage;
 
     private double price;
+
+    public CarTranslation(CarTranslationDto carTranslationDto, Car car) {
+        this.car = car;
+        this.locale = carTranslationDto.getLocale();
+        this.color = carTranslationDto.getColor();
+        this.description = carTranslationDto.getDescription();
+        this.mileage = carTranslationDto.getMileage();
+        this.price = carTranslationDto.getPrice();
+    }
 }

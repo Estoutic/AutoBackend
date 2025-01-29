@@ -56,6 +56,9 @@ public class ApplicationService implements IApplicationService {
     public void updateApplicationStatus(UUID applicationId, ApplicationStatus status) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationDoesNotExistException(applicationId.toString()));
+        if (application.getStatus() == status) {
+            throw new RuntimeException("status is already set to " + status.toString());
+        }
         if (status == ApplicationStatus.COMPLETED) {
             reportService.generateReport(applicationId);
         }

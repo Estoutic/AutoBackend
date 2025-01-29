@@ -49,9 +49,9 @@ public class ReportService implements IReportService {
     public void generateReport(UUID applicationId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationDoesNotExistException(applicationId.toString()));
-//        if (application.getReport() != null){
-//            return;
-//        }
+        if (application.getReport() != null){
+            return;
+        }
         Instant startOfMonth = Instant.now().atZone(ZoneId.systemDefault())
                 .with(TemporalAdjusters.firstDayOfMonth())
                 .toInstant();
