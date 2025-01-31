@@ -2,6 +2,7 @@ package com.drujba.autobackend.models.dto.car;
 
 
 import com.drujba.autobackend.db.entities.car.Car;
+import com.drujba.autobackend.db.entities.translation.CarTranslation;
 import com.drujba.autobackend.models.enums.auto.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -55,6 +56,29 @@ public class CarDto {
     private Boolean isAvailable;
 
     private Timestamp createdAt;
+
+    public CarDto(Car car, CarTranslation carTranslation) {
+        this.id = car.getId();
+        this.carModelId = car.getCarModel().getId();
+        this.color = carTranslation.getColor();
+        this.description = carTranslation.getDescription();
+        this.mileage = carTranslation.getMileage();
+        this.price = carTranslation.getPrice();
+
+        this.year = car.getYear();
+        this.ownersCount = car.getOwnersCount();
+        this.transmissionType = car.getTransmissionType();
+        this.bodyType = car.getBodyType();
+        this.enginePower = String.valueOf(car.getEnginePower());
+        this.engineType = car.getEngineType();
+        this.driveType = car.getDriveType();
+        this.engineCapacity = String.valueOf(car.getEngineCapacity());
+        this.steeringPosition = car.getSteeringPosition();
+        this.seatsCount = car.getSeatsCount();
+        this.isAvailable = car.isAvailable();
+        this.createdAt = Timestamp.from(car.getCreatedAt());
+
+    }
 
     public CarDto(Car car) {
         this.id = car.getId();

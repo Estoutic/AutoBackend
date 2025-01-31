@@ -4,6 +4,7 @@ import com.drujba.autobackend.models.dto.car.CarCreationDto;
 import com.drujba.autobackend.models.dto.car.CarDto;
 import com.drujba.autobackend.models.dto.car.CarFilterDto;
 import com.drujba.autobackend.models.dto.car.CarUpdateDto;
+import com.drujba.autobackend.models.enums.Locale;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,11 +19,11 @@ public interface ICarService {
 
     void updateCar(UUID id, CarUpdateDto carUpdateDto);
 
-    CarDto getCar(UUID id);
+    CarDto getCar(UUID id, Locale locale);
 
     List<CarDto> getAllCars();
 
     void hideCar(UUID id);
 
-    Page<CarDto> getFilteredCars(CarFilterDto carFilterDto, Pageable pageable);
+    Page<CarDto> getFilteredCars(CarFilterDto filterDto, Pageable pageable, Locale locale);
 }

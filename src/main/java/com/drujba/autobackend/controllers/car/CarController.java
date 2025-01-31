@@ -5,6 +5,7 @@ import com.drujba.autobackend.models.dto.car.CarDto;
 import com.drujba.autobackend.models.dto.car.CarFilterDto;
 import com.drujba.autobackend.models.dto.car.CarUpdateDto;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
+import com.drujba.autobackend.models.enums.Locale;
 import com.drujba.autobackend.services.car.ICarService;
 import com.drujba.autobackend.services.translation.ITranslationService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class CarController {
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable UUID id) {
-        carService.deleteCar(id);
+        carService.hideCar(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -49,8 +50,8 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarDto> getCar(@PathVariable UUID id) {
-        return ResponseEntity.ok(carService.getCar(id));
+    public ResponseEntity<CarDto> getCar(@PathVariable UUID id,  @RequestParam(defaultValue = "EU") Locale locale) {
+        return ResponseEntity.ok(carService.getCar(id,locale));
     }
 
     @GetMapping("/all")
@@ -59,10 +60,11 @@ public class CarController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam(defaultValue = "EU") Locale locale) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
-        Page<CarDto> cars = carService.getFilteredCars(filterDto, pageable);
+        Page<CarDto> cars = carService.getFilteredCars(filterDto, pageable,locale);
         return ResponseEntity.ok(cars);
     }
 }

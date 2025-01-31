@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,4 +16,6 @@ public interface BranchTranslationRepository extends JpaRepository<BranchTransla
     Boolean existsBranchTranslationByLocale(Locale locale);
 
     List<BranchTranslation> findAllByBranch(Branch branch);
+
+    Optional<BranchTranslation> findFirstByBranchAndLocale(Branch branch, Locale locale);
 }

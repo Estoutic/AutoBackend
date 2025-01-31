@@ -16,4 +16,6 @@ public interface CarTranslationRepository extends JpaRepository<CarTranslation, 
    Boolean existsCarTranslationByLocale(Locale locale);
 
    List<CarTranslation> findAllByCar(Car car);
+
+   Optional<CarTranslation> findByCarAndLocale(Car car, Locale locale);
 }

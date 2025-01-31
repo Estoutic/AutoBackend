@@ -2,11 +2,15 @@ package com.drujba.autobackend.services.car.impl;
 
 import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.db.entities.car.CarModel;
+import com.drujba.autobackend.db.entities.translation.CarTranslation;
 import com.drujba.autobackend.db.repositories.car.CarModelRepository;
 import com.drujba.autobackend.db.repositories.car.CarRepository;
+import com.drujba.autobackend.db.repositories.translation.CarTranslationRepository;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
+import com.drujba.autobackend.exceptions.car.CarTranslationDoesNotExistException;
 import com.drujba.autobackend.models.dto.car.*;
+import com.drujba.autobackend.models.enums.Locale;
 import com.drujba.autobackend.services.car.ICarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,12 +28,13 @@ public class CarService implements ICarService {
 
     private final CarRepository carRepository;
     private final CarModelRepository carModelRepository;
+    private final CarTranslationRepository carTranslationRepository;
 
     @Override
     public UUID saveCar(CarCreationDto carCreationDto) {
         CarModelDto carModelDto = carCreationDto.getCarModelDto();
         CarModel carModel = carModelRepository.findByBrandAndModelAndGeneration(carModelDto.getBrand(),
-                        carModelDto.getModel(),carModelDto.getGeneration())
+                        carModelDto.getModel(), carModelDto.getGeneration())
                 .orElseThrow(() -> new CarModelDoesNotExistException(carCreationDto.getCarModelDto().getModel()));
         Car car = new Car(carCreationDto, carModel);
         return carRepository.save(car).getId();
@@ -91,9 +96,16 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public CarDto getCar(UUID id) {
-        Car car = carRepository.findById(id).orElseThrow(() -> new CarDoesNotExistException(id.toString()));
-        return new CarDto(car);
+    public CarDto getCar(UUID id, Locale locale) {
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new CarDoesNotExistException(id.toString()));
+
+        CarTranslation translation = carTranslationRepository.findByCarAndLocale(car, locale)
+                .orElseGet(() -> carTranslationRepository.findByCarAndLocale(car, Locale.EU).orElseThrow(
+                        () -> new CarTranslationDoesNotExistException(id.toString())
+                ));
+
+        return new CarDto(car, translation);
     }
 
     @Override
@@ -109,7 +121,7 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Page<CarDto> getFilteredCars(CarFilterDto filterDto, Pageable pageable) {
+    public Page<CarDto> getFilteredCars(CarFilterDto filterDto, Pageable pageable, Locale locale) {
         Specification<Car> spec = Specification.where(null);
 
         // Фильтр по пробегу
@@ -236,9 +248,17 @@ public class CarService implements ICarService {
                     -> criteriaBuilder.lessThanOrEqualTo(root.get("seatsCount"), filterDto.getSeatsTo()));
         }
 
-        // Применение спецификаций и возврат результатов
         Page<Car> cars = carRepository.findAll(spec, pageable);
-        return (Page<CarDto>) cars.stream().filter(car -> car.isAvailable()).map(CarDto::new);
+
+        return cars.map(car -> {
+            CarTranslation translation = carTranslationRepository.findByCarAndLocale(car, locale)
+                    .orElseGet(() -> carTranslationRepository.findByCarAndLocale(car, Locale.EU).orElse(null));
+            if (translation != null) {
+                return new CarDto(car, translation);
+            } else {
+                return new CarDto(car);
+            }
+        });
     }
 
 }

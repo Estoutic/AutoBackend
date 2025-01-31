@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -33,9 +34,9 @@ public class CarTranslation {
 
     private String description;
 
-    private int mileage;
+    private BigDecimal mileage;
 
-    private double price;
+    private BigDecimal price;
 
     public CarTranslation(CarTranslationDto carTranslationDto, Car car) {
         this.car = car;

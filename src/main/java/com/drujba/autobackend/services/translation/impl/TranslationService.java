@@ -10,6 +10,7 @@ import com.drujba.autobackend.db.repositories.translation.BranchTranslationRepos
 import com.drujba.autobackend.db.repositories.translation.CarTranslationRepository;
 import com.drujba.autobackend.exceptions.branch.BranchDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
+import com.drujba.autobackend.exceptions.car.CarTranslationAlreadyExistException;
 import com.drujba.autobackend.exceptions.car.CarTranslationDoesNotExistException;
 import com.drujba.autobackend.models.dto.translation.BranchTranslationDto;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
@@ -36,7 +37,9 @@ public class TranslationService implements ITranslationService {
         Car car = carRepository.findById(dto.getCarId())
                 .orElseThrow(() -> new CarDoesNotExistException(dto.getCarId().toString()));
 
-        carTranslationRepository.existsCarTranslationByLocale(dto.getLocale());
+        if (carTranslationRepository.existsCarTranslationByLocale(dto.getLocale())){
+            throw new CarTranslationAlreadyExistException(car.getId(), dto.getLocale());
+        }
         CarTranslation carTranslation = new CarTranslation(dto, car);
         carTranslationRepository.save(carTranslation);
         return carTranslation.getId();
@@ -54,10 +57,10 @@ public class TranslationService implements ITranslationService {
         if (dto.getDescription() != null) {
             existingTranslation.setDescription(dto.getDescription());
         }
-        if (dto.getMileage() != 0) {
+        if (dto.getMileage() != null) {
             existingTranslation.setMileage(dto.getMileage());
         }
-        if (dto.getPrice() != 0.0) {
+        if (dto.getPrice() != null) {
             existingTranslation.setPrice(dto.getPrice());
         }
 

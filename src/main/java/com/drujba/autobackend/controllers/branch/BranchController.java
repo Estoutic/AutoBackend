@@ -2,6 +2,7 @@ package com.drujba.autobackend.controllers.branch;
 
 import com.drujba.autobackend.models.dto.branch.BranchCreationDto;
 import com.drujba.autobackend.models.dto.branch.BranchDto;
+import com.drujba.autobackend.models.enums.Locale;
 import com.drujba.autobackend.services.branch.IBranchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +33,12 @@ public class BranchController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BranchDto>> getAllBranches() {
-        return ResponseEntity.ok(branchService.getAllBranches());
+    public ResponseEntity<List<BranchDto>> getAllBranches(@RequestParam(defaultValue = "EU") Locale locale) {
+        return ResponseEntity.ok(branchService.getAllBranches(locale));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BranchDto> getBranchById(@PathVariable UUID id) {
-        return ResponseEntity.ok(branchService.getBranchById(id));
+    public ResponseEntity<BranchDto> getBranchById(@PathVariable UUID id, @RequestParam(defaultValue = "EU") Locale locale) {
+        return ResponseEntity.ok(branchService.getBranchById(id, locale));
     }
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -19,8 +20,8 @@ public class CarTranslationDto {
     private Locale locale;
     private String color;
     private String description;
-    private int mileage;
-    private double price;
+    private BigDecimal mileage;
+    private BigDecimal price;
 
     public CarTranslationDto(CarTranslation carTranslation) {
         this.id = carTranslation.getId();
