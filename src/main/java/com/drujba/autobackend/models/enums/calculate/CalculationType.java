@@ -1,17 +1,15 @@
 package com.drujba.autobackend.models.enums.calculate;
 
+import com.drujba.autobackend.models.enums.LocalizableEnum;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum CalculationType {
+public enum CalculationType implements LocalizableEnum {
 
     INDIVIDUAL,
     PERSONAL_INDIVIDUAL,
     LEGAL;
 
-    public String getLocalizedValue(Locale locale) {
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-        return bundle.getString("calculationType." + this.name().toLowerCase());
-    }
 }
 

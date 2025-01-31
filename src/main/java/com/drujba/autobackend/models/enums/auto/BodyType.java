@@ -1,9 +1,11 @@
 package com.drujba.autobackend.models.enums.auto;
 
+import com.drujba.autobackend.models.enums.LocalizableEnum;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum BodyType {
+public enum BodyType implements LocalizableEnum {
     SUV_3_DOORS,
     SUV_5_DOORS,
     SEDAN,
@@ -15,8 +17,4 @@ public enum BodyType {
     VAN,
     MINIVAN;
 
-    public String getLocalizedValue(Locale locale) {
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-        return bundle.getString("bodyType." + this.name().toLowerCase());
-    }
 }

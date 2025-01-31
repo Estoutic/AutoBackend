@@ -1,16 +1,15 @@
 package com.drujba.autobackend.models.enums.application;
 
+import com.drujba.autobackend.models.enums.LocalizableEnum;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum ApplicationStatus {
+public enum ApplicationStatus implements LocalizableEnum {
     IN_PROGRESS,
     ACCEPTED,
     REJECTED,
     COMPLETED;
 
-    public String getLocalizedValue(Locale locale) {
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-        return bundle.getString("applicationStatus." + this.name().toLowerCase());
-    }
+
 }

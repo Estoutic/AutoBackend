@@ -1,16 +1,13 @@
 package com.drujba.autobackend.models.enums.application;
 
+import com.drujba.autobackend.models.enums.LocalizableEnum;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum ContactType {
+public enum ContactType implements LocalizableEnum {
     CALL,
     EMAIL,
     WHATSAPP,
     TELEGRAM;
-
-    public String getLocalizedValue(Locale locale) {
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-        return bundle.getString("contactType." + this.name().toLowerCase());
-    }
 }

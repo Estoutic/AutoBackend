@@ -5,6 +5,15 @@ server:
 
 
 spring:
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   jpa:
     properties:
       hibernate:

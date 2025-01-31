@@ -1,16 +1,15 @@
 package com.drujba.autobackend.models.enums.auto;
 
+import com.drujba.autobackend.models.enums.LocalizableEnum;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum EngineType {
+public enum EngineType implements LocalizableEnum {
     GASOLINE,
     HYBRID,
     DIESEL,
     ELECTRIC;
 
-    public String getLocalizedValue(Locale locale) {
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-        return bundle.getString("engineType." + this.name().toLowerCase());
-    }
+
 }

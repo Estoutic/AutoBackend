@@ -1,16 +1,15 @@
 package com.drujba.autobackend.models.enums.auto;
 
+import com.drujba.autobackend.models.enums.LocalizableEnum;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum TransmissionType {
+public enum TransmissionType  implements LocalizableEnum {
     AUTOMATIC,
     VARIATOR,
     MECHANICAL,
     ROBOT;
 
-    public String getLocalizedValue(Locale locale) {
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-        return bundle.getString("transmissionType." + this.name().toLowerCase());
-    }
+
 }
