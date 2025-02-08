@@ -5,7 +5,9 @@ import com.drujba.autobackend.db.entities.Branch;
 import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.models.dto.branch.BranchDto;
 import com.drujba.autobackend.models.dto.car.CarDto;
+import com.drujba.autobackend.models.dto.car.CarResponseDto;
 import com.drujba.autobackend.models.dto.report.ReportDto;
+import com.drujba.autobackend.models.enums.Locale;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import com.drujba.autobackend.models.enums.application.ContactType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -23,7 +26,7 @@ import java.util.UUID;
 public class ApplicationDto {
 
     private UUID id;
-    private CarDto car;
+    private CarResponseDto car;
 
     private BranchDto branch;
 
@@ -41,9 +44,9 @@ public class ApplicationDto {
 
     private Instant updatedAt;
 
-    public ApplicationDto(Application application) {
+    public ApplicationDto(Application application, Locale locale) {
         this.id = application.getId();
-        this.car = new CarDto(application.getCar());
+        this.car = new CarResponseDto(application.getCar(), locale);
         this.branch = new BranchDto(application.getBranch());
         this.firstName = application.getFirstName();
         this.lastName = application.getLastName();
@@ -51,6 +54,19 @@ public class ApplicationDto {
         this.status = application.getStatus();
         this.createdAt = application.getCreatedAt();
         this.updatedAt = application.getUpdatedAt();
-        this.report = new ReportDto(application.getReport(),application.getReport().getApplications());
+        this.report = new ReportDto(application.getReport(), application.getReport().getApplications());
+    }
+
+    public ApplicationDto(Application application) {
+        this.id = application.getId();
+        this.car = new CarResponseDto(application.getCar());
+        this.branch = new BranchDto(application.getBranch());
+        this.firstName = application.getFirstName();
+        this.lastName = application.getLastName();
+        this.contact = application.getContact();
+        this.status = application.getStatus();
+        this.createdAt = application.getCreatedAt();
+        this.updatedAt = application.getUpdatedAt();
+        this.report = new ReportDto(application.getReport(), application.getReport().getApplications());
     }
 }

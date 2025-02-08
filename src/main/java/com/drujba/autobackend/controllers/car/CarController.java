@@ -1,9 +1,6 @@
 package com.drujba.autobackend.controllers.car;
 
-import com.drujba.autobackend.models.dto.car.CarCreationDto;
-import com.drujba.autobackend.models.dto.car.CarDto;
-import com.drujba.autobackend.models.dto.car.CarFilterDto;
-import com.drujba.autobackend.models.dto.car.CarUpdateDto;
+import com.drujba.autobackend.models.dto.car.*;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
 import com.drujba.autobackend.models.enums.Locale;
 import com.drujba.autobackend.services.car.ICarService;
@@ -50,12 +47,12 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarDto> getCar(@PathVariable UUID id,  @RequestParam(defaultValue = "EU") Locale locale) {
+    public ResponseEntity<CarResponseDto> getCar(@PathVariable UUID id, @RequestParam(defaultValue = "EU") Locale locale) {
         return ResponseEntity.ok(carService.getCar(id,locale));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<CarDto>> getAllCars(
+    public ResponseEntity<Page<CarResponseDto>> getAllCars(
             @RequestBody CarFilterDto filterDto,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -64,7 +61,7 @@ public class CarController {
             @RequestParam(defaultValue = "EU") Locale locale) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
-        Page<CarDto> cars = carService.getFilteredCars(filterDto, pageable,locale);
+        Page<CarResponseDto> cars = carService.getFilteredCars(filterDto, pageable,locale);
         return ResponseEntity.ok(cars);
     }
 }

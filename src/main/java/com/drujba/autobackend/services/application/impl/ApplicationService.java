@@ -12,6 +12,7 @@ import com.drujba.autobackend.exceptions.branch.BranchDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
+import com.drujba.autobackend.models.enums.Locale;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import com.drujba.autobackend.models.enums.application.ContactType;
 import com.drujba.autobackend.services.file.IReportService;
@@ -68,22 +69,22 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public ApplicationDto getApplication(UUID applicationId) {
+    public ApplicationDto getApplication(UUID applicationId, Locale locale) {
         Application application = applicationRepository.findById(applicationId).orElseThrow(() ->
                 new ApplicationDoesNotExistException(applicationId.toString()));
-        return new ApplicationDto(application);
+        return new ApplicationDto(application, locale);
     }
 
     @Override
-    public Page<ApplicationDto> getApplications(Pageable pageable) {
+    public Page<ApplicationDto> getApplications(Pageable pageable, Locale locale) {
         return applicationRepository.findAllByOrderByCreatedAtDesc(pageable)
-                .map(ApplicationDto::new);
+                .map(application -> new ApplicationDto(application, locale));
     }
 
     @Override
-    public Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status) {
+    public Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status, Locale locale) {
         return applicationRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable)
-                .map(ApplicationDto::new);
+                .map(application -> new ApplicationDto(application,locale));
     }
 
     public void validateContactDetails(ContactType contactType, String contactDetails) {

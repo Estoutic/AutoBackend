@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class Car {
 
     private String color;
 
-    private int mileage;
+    private BigDecimal mileage;
 
     private int ownersCount;
 
@@ -55,7 +56,7 @@ public class Car {
 
     private int seatsCount;
 
-    private double price;
+    private BigDecimal price;
 
     private String description;
 
@@ -72,7 +73,7 @@ public class Car {
         this.carModel = carModel;
         this.year = dto.getYear();
         this.color = dto.getColor();
-        this.mileage = dto.getMileage() != null ? dto.getMileage().intValue() : 0;
+        this.mileage = dto.getMileage() != null ? dto.getMileage() : BigDecimal.ZERO;
         this.ownersCount = dto.getOwnersCount() != null ? dto.getOwnersCount() : 0;
         this.transmissionType = dto.getTransmissionType();
         this.bodyType = dto.getBodyType();
@@ -82,7 +83,7 @@ public class Car {
         this.engineCapacity = dto.getEngineCapacity() != null ? Double.parseDouble(dto.getEngineCapacity()) : 0.0;
         this.steeringPosition = dto.getSteeringPosition();
         this.seatsCount = dto.getSeatsCount() != null ? dto.getSeatsCount() : 0;
-        this.price = dto.getPrice() != null ? dto.getPrice().doubleValue() : 0.0;
+        this.price = dto.getPrice() != null ? dto.getPrice() : BigDecimal.ZERO;
         this.description = dto.getDescription();
         this.vin = dto.getVin();
         this.isAvailable = true;

@@ -59,7 +59,7 @@ public class CarService implements ICarService {
             car.setColor(carUpdateDto.getColor());
         }
         if (carUpdateDto.getMileage() != null) {
-            car.setMileage(carUpdateDto.getMileage().intValue());
+            car.setMileage(carUpdateDto.getMileage());
         }
         if (carUpdateDto.getOwnersCount() != null) {
             car.setOwnersCount(carUpdateDto.getOwnersCount());
@@ -89,14 +89,14 @@ public class CarService implements ICarService {
             car.setSeatsCount(carUpdateDto.getSeatsCount());
         }
         if (carUpdateDto.getPrice() != null) {
-            car.setPrice(carUpdateDto.getPrice().doubleValue());
+            car.setPrice(carUpdateDto.getPrice());
         }
 
         carRepository.save(car);
     }
 
     @Override
-    public CarDto getCar(UUID id, Locale locale) {
+    public CarResponseDto getCar(UUID id, Locale locale) {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new CarDoesNotExistException(id.toString()));
 
@@ -105,13 +105,13 @@ public class CarService implements ICarService {
                         () -> new CarTranslationDoesNotExistException(id.toString())
                 ));
 
-        return new CarDto(car, translation);
+        return new CarResponseDto(car, translation);
     }
 
-    @Override
-    public List<CarDto> getAllCars() {
-        return carRepository.findAll().stream().map(CarDto::new).collect(Collectors.toList());
-    }
+//    @Override
+//    public List<CarDto> getAllCars() {
+//        return carRepository.findAll().stream().map(CarDto::new).collect(Collectors.toList());
+//    }
 
     @Override
     public void hideCar(UUID id) {
@@ -121,7 +121,7 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Page<CarDto> getFilteredCars(CarFilterDto filterDto, Pageable pageable, Locale locale) {
+    public Page<CarResponseDto> getFilteredCars(CarFilterDto filterDto, Pageable pageable, Locale locale) {
         Specification<Car> spec = Specification.where(null);
 
         // Фильтр по пробегу
@@ -254,9 +254,9 @@ public class CarService implements ICarService {
             CarTranslation translation = carTranslationRepository.findByCarAndLocale(car, locale)
                     .orElseGet(() -> carTranslationRepository.findByCarAndLocale(car, Locale.EU).orElse(null));
             if (translation != null) {
-                return new CarDto(car, translation);
+                return new CarResponseDto(car, translation);
             } else {
-                return new CarDto(car);
+                return new CarResponseDto(car);
             }
         });
     }

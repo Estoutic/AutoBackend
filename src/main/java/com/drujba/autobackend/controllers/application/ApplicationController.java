@@ -3,6 +3,7 @@ package com.drujba.autobackend.controllers.application;
 import com.drujba.autobackend.db.entities.Application;
 import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
+import com.drujba.autobackend.models.enums.Locale;
 import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import com.drujba.autobackend.services.application.IApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -43,19 +44,20 @@ public class ApplicationController {
 
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<ApplicationDto> getApplication(@PathVariable UUID id) {
-        return ResponseEntity.ok(applicationService.getApplication(id));
+    public ResponseEntity<ApplicationDto> getApplication(@PathVariable UUID id, @RequestParam(defaultValue = "EU") Locale locale) {
+        return ResponseEntity.ok(applicationService.getApplication(id, locale));
     }
 
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
     @GetMapping("/filter")
     public ResponseEntity<Page<ApplicationDto>> getApplicationsByStatus(
             @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(defaultValue = "EU") Locale locale,
             Pageable pageable) {
         if (status == null) {
-            return ResponseEntity.ok(applicationService.getApplications(pageable));
+            return ResponseEntity.ok(applicationService.getApplications(pageable, locale));
         }
-        return ResponseEntity.ok(applicationService.getApplicationsByStatus(pageable,status));
+        return ResponseEntity.ok(applicationService.getApplicationsByStatus(pageable,status,locale));
     }
 
 

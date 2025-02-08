@@ -57,28 +57,28 @@ public class CarDto {
 
     private Timestamp createdAt;
 
-    public CarDto(Car car, CarTranslation carTranslation) {
-        this.id = car.getId();
-        this.carModelId = car.getCarModel().getId();
-        this.color = carTranslation.getColor();
-        this.description = carTranslation.getDescription();
-        this.mileage = carTranslation.getMileage();
-        this.price = carTranslation.getPrice();
-
-        this.year = car.getYear();
-        this.ownersCount = car.getOwnersCount();
-        this.transmissionType = car.getTransmissionType();
-        this.bodyType = car.getBodyType();
-        this.enginePower = String.valueOf(car.getEnginePower());
-        this.engineType = car.getEngineType();
-        this.driveType = car.getDriveType();
-        this.engineCapacity = String.valueOf(car.getEngineCapacity());
-        this.steeringPosition = car.getSteeringPosition();
-        this.seatsCount = car.getSeatsCount();
-        this.isAvailable = car.isAvailable();
-        this.createdAt = Timestamp.from(car.getCreatedAt());
-
-    }
+//    public CarDto(Car car, CarTranslation carTranslation) {
+//        this.id = car.getId();
+//        this.carModelId = car.getCarModel().getId();
+//        this.color = carTranslation.getColor();
+//        this.description = carTranslation.getDescription();
+//        this.mileage = carTranslation.getMileage();
+//        this.price = carTranslation.getPrice();
+//
+//        this.year = car.getYear();
+//        this.ownersCount = car.getOwnersCount();
+//        this.transmissionType = car.getTransmissionType();
+//        this.bodyType = car.getBodyType();
+//        this.enginePower = String.valueOf(car.getEnginePower());
+//        this.engineType = car.getEngineType();
+//        this.driveType = car.getDriveType();
+//        this.engineCapacity = String.valueOf(car.getEngineCapacity());
+//        this.steeringPosition = car.getSteeringPosition();
+//        this.seatsCount = car.getSeatsCount();
+//        this.isAvailable = car.isAvailable();
+//        this.createdAt = Timestamp.from(car.getCreatedAt());
+//
+//    }
 
     public CarDto(Car car) {
         this.id = car.getId();
@@ -86,7 +86,7 @@ public class CarDto {
         this.year = car.getYear();
         this.description = car.getDescription();
         this.color = car.getColor();
-        this.mileage = BigDecimal.valueOf(car.getMileage());
+        this.mileage = car.getMileage();
         this.ownersCount = car.getOwnersCount();
         this.transmissionType = car.getTransmissionType();
         this.bodyType = car.getBodyType();
@@ -96,7 +96,7 @@ public class CarDto {
         this.engineCapacity = String.valueOf(car.getEngineCapacity());
         this.steeringPosition = car.getSteeringPosition();
         this.seatsCount = car.getSeatsCount();
-        this.price = BigDecimal.valueOf(car.getPrice());
+        this.price = car.getPrice();
         this.isAvailable = car.isAvailable();
         this.createdAt = Timestamp.from(car.getCreatedAt());
     }
