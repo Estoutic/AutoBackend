@@ -1,6 +1,6 @@
 package com.drujba.autobackend.db.entities;
 
-import com.drujba.autobackend.models.enums.calculate.CurrencyCode;
+import com.drujba.autobackend.models.enums.calculate.Currency;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class CurrencyRate {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "currency_code", nullable = false)
-    private CurrencyCode currencyCode;
+    private Currency currencyCode;
 
     private double rateToRub;
     private double value;
