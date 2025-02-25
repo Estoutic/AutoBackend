@@ -1,10 +1,10 @@
 package com.drujba.autobackend.services.application.impl;
 
 import com.drujba.autobackend.db.entities.Application;
-import com.drujba.autobackend.db.entities.Branch;
+//import com.drujba.autobackend.db.entities.Branch;
 import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.db.repositories.ApplicationRepository;
-import com.drujba.autobackend.db.repositories.BranchRepository;
+//import com.drujba.autobackend.db.repositories.BranchRepository;
 import com.drujba.autobackend.db.repositories.car.CarRepository;
 import com.drujba.autobackend.exceptions.application.ApplicationDoesNotExistException;
 import com.drujba.autobackend.exceptions.application.StatusAlreadySetException;
@@ -31,7 +31,7 @@ public class ApplicationService implements IApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final CarRepository carRepository;
-    private final BranchRepository branchRepository;
+//    private final BranchRepository branchRepository;
     private final IReportService reportService;
 
     @Override
@@ -39,9 +39,9 @@ public class ApplicationService implements IApplicationService {
         validateContactDetails(applicationCreationDto.getContact(), applicationCreationDto.getContactDetails());
         Car car = carRepository.findById(applicationCreationDto.getCarId()).orElseThrow(()
                 -> new CarDoesNotExistException(applicationCreationDto.getCarId().toString()));
-        Branch branch = branchRepository.findById(applicationCreationDto.getBranchId()).orElseThrow(() ->
-                new BranchDoesNotExistException(applicationCreationDto.getBranchId().toString()));
-        Application application = new Application(applicationCreationDto, car, branch);
+//        Branch branch = branchRepository.findById(applicationCreationDto.getBranchId()).orElseThrow(() ->
+//                new BranchDoesNotExistException(applicationCreationDto.getBranchId().toString()));
+        Application application = new Application(applicationCreationDto, car);
         return applicationRepository.save(application).getId();
     }
 

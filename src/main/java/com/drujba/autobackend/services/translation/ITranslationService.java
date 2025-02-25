@@ -1,6 +1,6 @@
 package com.drujba.autobackend.services.translation;
 
-import com.drujba.autobackend.models.dto.translation.BranchTranslationDto;
+//import com.drujba.autobackend.models.dto.translation.BranchTranslationDto;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
 
 import java.util.List;
@@ -17,11 +17,11 @@ public interface ITranslationService {
     List<CarTranslationDto> getCarTranslations(UUID carId);
 
 
-    UUID createBranchTranslation(BranchTranslationDto dto);
-
-    void updateBranchTranslation(UUID translationId, BranchTranslationDto dto);
-
-    void deleteBranchTranslation(UUID branchId);
-
-    List<BranchTranslationDto> getBranchTranslations(UUID carId);
+//    UUID createBranchTranslation(BranchTranslationDto dto);
+//
+//    void updateBranchTranslation(UUID translationId, BranchTranslationDto dto);
+//
+//    void deleteBranchTranslation(UUID branchId);
+//
+//    List<BranchTranslationDto> getBranchTranslations(UUID carId);
 }

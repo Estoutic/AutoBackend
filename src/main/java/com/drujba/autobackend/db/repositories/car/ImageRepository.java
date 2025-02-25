@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface ImageRepository extends JpaRepository<Image, UUID> {
 
     List<Image> findByCar(Car car);
+
 }

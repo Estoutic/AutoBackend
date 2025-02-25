@@ -51,7 +51,7 @@ public class CarController {
         return ResponseEntity.ok(carService.getCar(id,locale));
     }
 
-    @GetMapping("/all")
+    @PostMapping ("/all")
     public ResponseEntity<Page<CarResponseDto>> getAllCars(
             @RequestBody CarFilterDto filterDto,
             @RequestParam(defaultValue = "0") int page,

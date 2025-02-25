@@ -1,7 +1,7 @@
 package com.drujba.autobackend.db.entities.car;
 
 import com.drujba.autobackend.models.dto.car.CarCreationDto;
-import com.drujba.autobackend.models.enums.auto.*;
+import com.drujba.autobackend.models.enums.car.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

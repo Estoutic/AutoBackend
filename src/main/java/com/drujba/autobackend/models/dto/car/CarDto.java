@@ -2,8 +2,7 @@ package com.drujba.autobackend.models.dto.car;
 
 
 import com.drujba.autobackend.db.entities.car.Car;
-import com.drujba.autobackend.db.entities.translation.CarTranslation;
-import com.drujba.autobackend.models.enums.auto.*;
+import com.drujba.autobackend.models.enums.car.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.drujba.autobackend.models.enums.auto;
+package com.drujba.autobackend.models.enums.car;
 
 import com.drujba.autobackend.models.enums.LocalizableEnum;
 

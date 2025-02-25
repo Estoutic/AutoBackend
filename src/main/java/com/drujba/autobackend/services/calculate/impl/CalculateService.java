@@ -3,11 +3,10 @@ package com.drujba.autobackend.services.calculate.impl;
 import com.drujba.autobackend.models.dto.calculate.Coefficients;
 import com.drujba.autobackend.models.dto.calculate.CustomsCalculationRequestDto;
 import com.drujba.autobackend.models.dto.calculate.CustomsCalculationResponseDto;
-import com.drujba.autobackend.models.enums.auto.EngineType;
+import com.drujba.autobackend.models.enums.car.EngineType;
 import com.drujba.autobackend.models.enums.calculate.*;
 import com.drujba.autobackend.services.calculate.ICalculateService;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

@@ -2,9 +2,11 @@ package com.drujba.autobackend.services.car.impl;
 
 import com.drujba.autobackend.db.entities.car.Car;
 import com.drujba.autobackend.db.entities.car.CarModel;
+import com.drujba.autobackend.db.entities.car.Image;
 import com.drujba.autobackend.db.entities.translation.CarTranslation;
 import com.drujba.autobackend.db.repositories.car.CarModelRepository;
 import com.drujba.autobackend.db.repositories.car.CarRepository;
+import com.drujba.autobackend.db.repositories.car.ImageRepository;
 import com.drujba.autobackend.db.repositories.translation.CarTranslationRepository;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
@@ -29,6 +31,7 @@ public class CarService implements ICarService {
     private final CarRepository carRepository;
     private final CarModelRepository carModelRepository;
     private final CarTranslationRepository carTranslationRepository;
+    private final ImageRepository imageRepository;
 
     @Override
     public UUID saveCar(CarCreationDto carCreationDto) {
@@ -104,8 +107,8 @@ public class CarService implements ICarService {
                 .orElseGet(() -> carTranslationRepository.findByCarAndLocale(car, Locale.EU).orElseThrow(
                         () -> new CarTranslationDoesNotExistException(id.toString())
                 ));
-
-        return new CarResponseDto(car, translation);
+        List<String> images = imageRepository.findByCar(car).stream().map(Image::getFilePath).toList();
+        return new CarResponseDto(car, translation, images);
     }
 
 //    @Override
@@ -253,10 +256,11 @@ public class CarService implements ICarService {
         return cars.map(car -> {
             CarTranslation translation = carTranslationRepository.findByCarAndLocale(car, locale)
                     .orElseGet(() -> carTranslationRepository.findByCarAndLocale(car, Locale.EU).orElse(null));
+            List<String> images = imageRepository.findByCar(car).stream().map(Image::getFilePath).toList();
             if (translation != null) {
-                return new CarResponseDto(car, translation);
+                return new CarResponseDto(car, translation, images);
             } else {
-                return new CarResponseDto(car);
+                return new CarResponseDto(car, images);
             }
         });
     }

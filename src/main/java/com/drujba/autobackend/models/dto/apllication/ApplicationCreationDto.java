@@ -21,6 +21,6 @@ public class ApplicationCreationDto {
     private ContactType contact;
     private String contactDetails;
 
-    private UUID branchId;
+//    private UUID branchId;
     private UUID carId;
 }

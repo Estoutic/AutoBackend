@@ -14,6 +14,7 @@ import com.drujba.autobackend.services.file.IImageService;
 import com.drujba.autobackend.services.file.IMinioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -27,12 +28,13 @@ public class ImageService implements IImageService {
     private final CarRepository carRepository;
 
     @Override
+    @Transactional
     public UUID saveImage(UUID carId, String fileName, InputStream inputStream, String contentType) {
         Car car = carRepository.findById(carId).orElseThrow(() -> new CarDoesNotExistException(carId.toString()));
         Image image = new Image(car);
         imageRepository.save(image);
         String path = minioService.uploadFile(BucketType.IMAGE, image.getId().toString(), inputStream, contentType);
-        image.setFilePath(String.format("%s%s", path, image.getId()));
+        image.setFilePath(path);
         return imageRepository.save(image).getId();
     }
 

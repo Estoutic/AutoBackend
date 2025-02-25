@@ -1,10 +1,6 @@
 package com.drujba.autobackend.models.dto.apllication;
 
 import com.drujba.autobackend.db.entities.Application;
-import com.drujba.autobackend.db.entities.Branch;
-import com.drujba.autobackend.db.entities.car.Car;
-import com.drujba.autobackend.models.dto.branch.BranchDto;
-import com.drujba.autobackend.models.dto.car.CarDto;
 import com.drujba.autobackend.models.dto.car.CarResponseDto;
 import com.drujba.autobackend.models.dto.report.ReportDto;
 import com.drujba.autobackend.models.enums.Locale;
@@ -28,7 +24,7 @@ public class ApplicationDto {
     private UUID id;
     private CarResponseDto car;
 
-    private BranchDto branch;
+//    private BranchDto branch;
 
     @JsonBackReference
     private ReportDto report;
@@ -47,7 +43,7 @@ public class ApplicationDto {
     public ApplicationDto(Application application, Locale locale) {
         this.id = application.getId();
         this.car = new CarResponseDto(application.getCar(), locale);
-        this.branch = new BranchDto(application.getBranch());
+//        this.branch = new BranchDto(application.getBranch());
         this.firstName = application.getFirstName();
         this.lastName = application.getLastName();
         this.contact = application.getContact();
@@ -60,7 +56,7 @@ public class ApplicationDto {
     public ApplicationDto(Application application) {
         this.id = application.getId();
         this.car = new CarResponseDto(application.getCar());
-        this.branch = new BranchDto(application.getBranch());
+//        this.branch = new BranchDto(application.getBranch());
         this.firstName = application.getFirstName();
         this.lastName = application.getLastName();
         this.contact = application.getContact();

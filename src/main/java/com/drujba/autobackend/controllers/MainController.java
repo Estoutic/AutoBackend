@@ -2,7 +2,7 @@ package com.drujba.autobackend.controllers;
 
 
 import com.drujba.autobackend.models.enums.Locale;
-import com.drujba.autobackend.models.enums.auto.TransmissionType;
+import com.drujba.autobackend.models.enums.car.TransmissionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

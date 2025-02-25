@@ -1,18 +1,18 @@
 package com.drujba.autobackend.services.translation.impl;
 
-import com.drujba.autobackend.db.entities.Branch;
+//import com.drujba.autobackend.db.entities.Branch;
 import com.drujba.autobackend.db.entities.car.Car;
-import com.drujba.autobackend.db.entities.translation.BranchTranslation;
+//import com.drujba.autobackend.db.entities.translation.BranchTranslation;
 import com.drujba.autobackend.db.entities.translation.CarTranslation;
-import com.drujba.autobackend.db.repositories.BranchRepository;
+//import com.drujba.autobackend.db.repositories.BranchRepository;
 import com.drujba.autobackend.db.repositories.car.CarRepository;
-import com.drujba.autobackend.db.repositories.translation.BranchTranslationRepository;
+//import com.drujba.autobackend.db.repositories.translation.BranchTranslationRepository;
 import com.drujba.autobackend.db.repositories.translation.CarTranslationRepository;
 import com.drujba.autobackend.exceptions.branch.BranchDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarTranslationAlreadyExistException;
 import com.drujba.autobackend.exceptions.car.CarTranslationDoesNotExistException;
-import com.drujba.autobackend.models.dto.translation.BranchTranslationDto;
+//import com.drujba.autobackend.models.dto.translation.BranchTranslationDto;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
 import com.drujba.autobackend.services.translation.ITranslationService;
 import jakarta.transaction.Transactional;
@@ -28,8 +28,8 @@ public class TranslationService implements ITranslationService {
 
     private final CarRepository carRepository;
     private final CarTranslationRepository carTranslationRepository;
-    private final BranchTranslationRepository branchTranslationRepository;
-    private final BranchRepository branchRepository;
+//    private final BranchTranslationRepository branchTranslationRepository;
+//    private final BranchRepository branchRepository;
 
     @Override
     @Transactional
@@ -84,49 +84,49 @@ public class TranslationService implements ITranslationService {
         return carTranslations.stream().map(CarTranslationDto::new).toList();
     }
 
-    @Override
-    public UUID createBranchTranslation(BranchTranslationDto dto) {
-        Branch branch = branchRepository.findById(dto.getBranchId())
-                .orElseThrow(() -> new BranchDoesNotExistException(dto.getBranchId().toString()));
-
-        branchTranslationRepository.existsBranchTranslationByLocale(dto.getLocale());
-        BranchTranslation branchTranslation = new BranchTranslation(dto, branch);
-        branchTranslationRepository.save(branchTranslation);
-        return branchTranslation.getId();
-    }
-
-    @Override
-    public void updateBranchTranslation(UUID translationId, BranchTranslationDto dto) {
-        BranchTranslation branchTranslation = branchTranslationRepository.findById(translationId).orElseThrow(
-                () -> new BranchDoesNotExistException(dto.getBranchId().toString()));
-        if (dto.getName() != null) {
-            branchTranslation.setName(dto.getName());
-        }
-        if (dto.getCity() != null) {
-            branchTranslation.setCity(dto.getCity());
-        }
-        if (dto.getAddress() != null) {
-            branchTranslation.setAddress(dto.getAddress());
-        }
-        if (dto.getRegion() != null) {
-            branchTranslation.setRegion(dto.getRegion());
-        }
-        branchTranslationRepository.save(branchTranslation);
-    }
-
-    @Override
-    public void deleteBranchTranslation(UUID branchId) {
-
-        BranchTranslation branchTranslation = branchTranslationRepository.findById(branchId).orElseThrow(
-                () -> new BranchDoesNotExistException(branchId.toString()));
-        branchTranslationRepository.delete(branchTranslation);
-    }
-
-    @Override
-    public List<BranchTranslationDto> getBranchTranslations(UUID branchId) {
-        Branch branch = branchRepository.findById(branchId).orElseThrow(() ->
-                new BranchDoesNotExistException(branchId.toString()));
-        List<BranchTranslation> branchTranslations = branchTranslationRepository.findAllByBranch(branch);
-        return branchTranslations.stream().map(BranchTranslationDto::new).toList();
-    }
+//    @Override
+//    public UUID createBranchTranslation(BranchTranslationDto dto) {
+//        Branch branch = branchRepository.findById(dto.getBranchId())
+//                .orElseThrow(() -> new BranchDoesNotExistException(dto.getBranchId().toString()));
+//
+//        branchTranslationRepository.existsBranchTranslationByLocale(dto.getLocale());
+//        BranchTranslation branchTranslation = new BranchTranslation(dto, branch);
+//        branchTranslationRepository.save(branchTranslation);
+//        return branchTranslation.getId();
+//    }
+//
+//    @Override
+//    public void updateBranchTranslation(UUID translationId, BranchTranslationDto dto) {
+//        BranchTranslation branchTranslation = branchTranslationRepository.findById(translationId).orElseThrow(
+//                () -> new BranchDoesNotExistException(dto.getBranchId().toString()));
+//        if (dto.getName() != null) {
+//            branchTranslation.setName(dto.getName());
+//        }
+//        if (dto.getCity() != null) {
+//            branchTranslation.setCity(dto.getCity());
+//        }
+//        if (dto.getAddress() != null) {
+//            branchTranslation.setAddress(dto.getAddress());
+//        }
+//        if (dto.getRegion() != null) {
+//            branchTranslation.setRegion(dto.getRegion());
+//        }
+//        branchTranslationRepository.save(branchTranslation);
+//    }
+//
+//    @Override
+//    public void deleteBranchTranslation(UUID branchId) {
+//
+//        BranchTranslation branchTranslation = branchTranslationRepository.findById(branchId).orElseThrow(
+//                () -> new BranchDoesNotExistException(branchId.toString()));
+//        branchTranslationRepository.delete(branchTranslation);
+//    }
+//
+//    @Override
+//    public List<BranchTranslationDto> getBranchTranslations(UUID branchId) {
+//        Branch branch = branchRepository.findById(branchId).orElseThrow(() ->
+//                new BranchDoesNotExistException(branchId.toString()));
+//        List<BranchTranslation> branchTranslations = branchTranslationRepository.findAllByBranch(branch);
+//        return branchTranslations.stream().map(BranchTranslationDto::new).toList();
+//    }
 }

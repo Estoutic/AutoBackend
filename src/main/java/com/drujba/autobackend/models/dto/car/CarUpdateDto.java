@@ -1,13 +1,12 @@
 package com.drujba.autobackend.models.dto.car;
 
-import com.drujba.autobackend.models.enums.auto.*;
+import com.drujba.autobackend.models.enums.car.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Getter
 @Setter

@@ -1,7 +1,6 @@
 package com.drujba.autobackend.models.dto.calculate;
 
-import com.drujba.autobackend.models.enums.auto.EngineType;
-import com.drujba.autobackend.models.enums.auto.HybridType;
+import com.drujba.autobackend.models.enums.car.EngineType;
 import com.drujba.autobackend.models.enums.calculate.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

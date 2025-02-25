@@ -28,9 +28,9 @@ public class Application {
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
-    @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
-    private Branch branch;
+//    @ManyToOne
+//    @JoinColumn(name = "branch_id", nullable = false)
+//    private Branch branch;
 
     @ManyToOne
     @JoinColumn(name = "report_id")
@@ -53,13 +53,22 @@ public class Application {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    public Application(ApplicationCreationDto applicationCreationDto, Car car, Branch branch) {
+//    public Application(ApplicationCreationDto applicationCreationDto, Car car, Branch branch) {
+//        this.firstName = applicationCreationDto.getFirstName();
+//        this.lastName = applicationCreationDto.getLastName();
+//        this.contact = applicationCreationDto.getContact();
+//        this.contactDetails = applicationCreationDto.getContactDetails();
+//        this.car = car;
+////        this.branch = branch;
+//        this.status = ApplicationStatus.ACCEPTED;
+//        this.report = null;
+//    }
+    public Application(ApplicationCreationDto applicationCreationDto, Car car) {
         this.firstName = applicationCreationDto.getFirstName();
         this.lastName = applicationCreationDto.getLastName();
         this.contact = applicationCreationDto.getContact();
         this.contactDetails = applicationCreationDto.getContactDetails();
         this.car = car;
-        this.branch = branch;
         this.status = ApplicationStatus.ACCEPTED;
         this.report = null;
     }
