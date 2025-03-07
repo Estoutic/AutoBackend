@@ -18,6 +18,7 @@ public interface CarModelRepository extends JpaRepository<CarModel, UUID> {
 
     Boolean existsByBrandAndModelAndGeneration(String brand, String model, String generation);
 
+
     @Query("SELECT DISTINCT cm.brand FROM CarModel cm")
     List<String> findDistinctBrands();
 
