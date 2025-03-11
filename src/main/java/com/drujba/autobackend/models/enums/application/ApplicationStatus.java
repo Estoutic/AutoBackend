@@ -10,6 +10,4 @@ public enum ApplicationStatus implements LocalizableEnum {
     ACCEPTED,
     REJECTED,
     COMPLETED;
-
-
 }

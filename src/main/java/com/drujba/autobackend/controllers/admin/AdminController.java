@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,6 +39,12 @@ public class AdminController {
     public ResponseEntity<Void> deactivateUser(@PathVariable UUID id, HttpServletRequest request) {
         adminService.deactivateEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
+    @GetMapping("/user/all")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(adminService.getAllUsers());
     }
 
 

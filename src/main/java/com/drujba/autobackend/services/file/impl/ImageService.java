@@ -7,6 +7,7 @@ import com.drujba.autobackend.db.repositories.car.ImageRepository;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.ImageDoesNotBelongException;
 import com.drujba.autobackend.exceptions.car.ImageDoestNotExistException;
+import com.drujba.autobackend.exceptions.minio.UploadImageException;
 import com.drujba.autobackend.models.dto.car.ImageDto;
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
 import com.drujba.autobackend.models.enums.BucketType;
@@ -15,8 +16,12 @@ import com.drujba.autobackend.services.file.IMinioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,6 +43,35 @@ public class ImageService implements IImageService {
         return imageRepository.save(image).getId();
     }
 
+    @Override
+    @Transactional
+    public List<UUID> saveImages(UUID carId, List<MultipartFile> files) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new CarDoesNotExistException(carId.toString()));
+
+        if (files.size() > 10) {
+            throw new UploadImageException("Нельзя загрузить более 10 изображений за раз.");
+        }
+
+        List<UUID> imageIds = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            try (InputStream inputStream = file.getInputStream()) {
+                Image image = new Image(car);
+                imageRepository.save(image);
+
+                String path = minioService.uploadFile(BucketType.IMAGE, image.getId().toString(), inputStream, file.getContentType());
+                image.setFilePath(path);
+                imageRepository.save(image);
+
+                imageIds.add(image.getId());
+            } catch (IOException e) {
+                throw new UploadImageException("Ошибка при загрузке файла: " + file.getOriginalFilename(), e);
+            }
+        }
+
+        return imageIds;
+    }
     @Override
     public ImageResponseDto getImagesByCarId(UUID carId) {
 

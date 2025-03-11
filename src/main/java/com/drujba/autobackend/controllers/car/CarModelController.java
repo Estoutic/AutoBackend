@@ -58,7 +58,7 @@ public class CarModelController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("")
+    @PostMapping("/info")
     public ResponseEntity<CarModelDto> getCarModel(@RequestBody CarModelDto carModelDto) {
         CarModel carModel = carModelRepository.findByBrandAndModelAndGeneration(carModelDto.getBrand(),carModelDto.getModel(),
                 carModelDto.getGeneration()).orElseThrow(() -> new CarModelDoesNotExistException(carModelDto.getModel()));

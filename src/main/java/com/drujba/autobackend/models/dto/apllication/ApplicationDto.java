@@ -34,6 +34,8 @@ public class ApplicationDto {
 
     private ContactType contact;
 
+    private String contactDetails;
+
     private ApplicationStatus status;
 
     private Instant createdAt;
@@ -47,10 +49,13 @@ public class ApplicationDto {
         this.firstName = application.getFirstName();
         this.lastName = application.getLastName();
         this.contact = application.getContact();
+        this.contactDetails = application.getContactDetails();
         this.status = application.getStatus();
         this.createdAt = application.getCreatedAt();
         this.updatedAt = application.getUpdatedAt();
-        this.report = new ReportDto(application.getReport(), application.getReport().getApplications());
+        if (application.getReport() != null) {
+            this.report = new ReportDto(application.getReport(), application.getReport().getApplications());
+        }
     }
 
     public ApplicationDto(Application application) {

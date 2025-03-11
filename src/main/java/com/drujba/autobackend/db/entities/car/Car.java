@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -70,6 +71,9 @@ public class Car {
     private Instant createdAt;
 
     public Car(CarCreationDto dto, CarModel carModel) {
+        if (dto.getVin() != null & !Objects.equals(dto.getVin(), "")) {
+            this.vin = dto.getVin();
+        }
         this.carModel = carModel;
         this.year = dto.getYear();
         this.color = dto.getColor();
@@ -85,7 +89,6 @@ public class Car {
         this.seatsCount = dto.getSeatsCount() != null ? dto.getSeatsCount() : 0;
         this.price = dto.getPrice() != null ? dto.getPrice() : BigDecimal.ZERO;
         this.description = dto.getDescription();
-        this.vin = dto.getVin();
         this.isAvailable = true;
     }
 }

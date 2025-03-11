@@ -21,6 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -104,11 +105,12 @@ public class CarService implements ICarService {
                 .orElseThrow(() -> new CarDoesNotExistException(id.toString()));
 
         CarTranslation translation = carTranslationRepository.findByCarAndLocale(car, locale)
-                .orElseGet(() -> carTranslationRepository.findByCarAndLocale(car, Locale.EU).orElseThrow(
-                        () -> new CarTranslationDoesNotExistException(id.toString())
-                ));
+                .orElseGet(() -> carTranslationRepository.findByCarAndLocale(car, Locale.EU).orElse(null));
         List<String> images = imageRepository.findByCar(car).stream().map(Image::getFilePath).toList();
-        return new CarResponseDto(car, translation, images);
+        if (translation != null) {
+            return new CarResponseDto(car, translation, images);
+        }
+        return new CarResponseDto(car, images);
     }
 
 //    @Override
@@ -144,19 +146,19 @@ public class CarService implements ICarService {
         }
 
         // Фильтр по бренду
-        if (filterDto.getBrand() != null) {
+        if (filterDto.getBrand() != null & !Objects.equals(filterDto.getBrand(), "")) {
             spec = spec.and((root, query, criteriaBuilder)
                     -> criteriaBuilder.equal(root.get("carModel").get("brand"), filterDto.getBrand()));
         }
 
         // Фильтр по модели
-        if (filterDto.getModel() != null) {
+        if (filterDto.getModel() != null & !Objects.equals(filterDto.getModel(), "")) {
             spec = spec.and((root, query, criteriaBuilder)
                     -> criteriaBuilder.equal(root.get("carModel").get("model"), filterDto.getModel()));
         }
 
         // Фильтр по поколению
-        if (filterDto.getGeneration() != null) {
+        if (filterDto.getGeneration() != null & !Objects.equals(filterDto.getGeneration(), "")) {
             spec = spec.and((root, query, criteriaBuilder)
                     -> criteriaBuilder.equal(root.get("carModel").get("generation"), filterDto.getGeneration()));
         }

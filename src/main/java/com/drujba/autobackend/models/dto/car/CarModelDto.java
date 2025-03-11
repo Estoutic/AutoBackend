@@ -7,12 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 public class CarModelDto {
+
+    private UUID carModelId;
 
     private String brand;
 
@@ -21,6 +25,7 @@ public class CarModelDto {
     private String generation;
 
     public CarModelDto(CarModel carModel) {
+        this.carModelId = carModel.getId();
         this.brand = carModel.getBrand();
         this.model = carModel.getModel();
         this.generation = carModel.getGeneration();
