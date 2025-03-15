@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,21 +54,27 @@ public class AdminController {
         reportService.deleteReport(id);
         return ResponseEntity.noContent().build();
     }
-
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
     @GetMapping("/report/all")
     public ResponseEntity<Page<ReportDto>> getAllReports(
-            @RequestBody ReportFilterDto filterDto,
+            @RequestParam(required = false) String createdAfter,
+            @RequestParam(required = false) String createdBefore,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortOrder) {
 
+        ReportFilterDto filterDto = new ReportFilterDto();
+        if (createdAfter != null) {
+            filterDto.setCreatedAfter(Instant.parse(createdAfter));
+        }
+        if (createdBefore != null) {
+            filterDto.setCreatedBefore(Instant.parse(createdBefore));
+        }
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
         Page<ReportDto> reports = reportService.getFilteredReports(filterDto, pageable);
         return ResponseEntity.ok(reports);
     }
-
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
     @GetMapping("/report/{id}")
     public ResponseEntity<String> getReport(@PathVariable UUID id) {

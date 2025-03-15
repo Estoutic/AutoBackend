@@ -1,19 +1,18 @@
 package com.drujba.autobackend.models.dto.calculate;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.N;
-
-import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 public class CustomsCalculationResponseDto {
-    private BigDecimal carPriceInRubles; // стоимость в рублях
-    private BigDecimal customsDuty;       // таможенный сбор
-    private BigDecimal exciseFee;         // пошлина
-    private BigDecimal utilizationFee;    // утилизационный сбор
-    private BigDecimal vatAndExciseForLegalEntities; // НДС и акциз (для юридических лиц)
-    private BigDecimal totalAmount;       // общая сумма сборов
+    private String mode;            // Режим расчёта (ETC, CTP и т.д.)
+    private double priceRub;        // Стоимость автомобиля в рублях (если актуально)
+    private double dutyRub;         // Пошлина
+    private double exciseRub;       // Акциз
+    private double vatRub;          // НДС
+    private double clearanceFee;    // Таможенный сбор
+    private double recyclingFee;    // Утилизационный сбор
+    private double utilFee;         // Сбор за утилизацию (базовый), если отличается
+    private double totalPay;        // Итоговая сумма
 }

@@ -58,7 +58,7 @@ public class ApplicationDto {
         }
     }
 
-    public ApplicationDto(Application application) {
+    public ApplicationDto(Application application, ReportDto report) {
         this.id = application.getId();
         this.car = new CarResponseDto(application.getCar());
 //        this.branch = new BranchDto(application.getBranch());
@@ -68,6 +68,7 @@ public class ApplicationDto {
         this.status = application.getStatus();
         this.createdAt = application.getCreatedAt();
         this.updatedAt = application.getUpdatedAt();
-        this.report = new ReportDto(application.getReport(), application.getReport().getApplications());
+        this.report = report;
+//        this.report = new ReportDto(application.getReport(), application.getReport().getApplications());
     }
 }

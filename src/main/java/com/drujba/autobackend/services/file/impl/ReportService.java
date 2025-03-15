@@ -50,7 +50,7 @@ public class ReportService implements IReportService {
     public void generateReport(UUID applicationId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationDoesNotExistException(applicationId.toString()));
-        if (application.getReport() != null){
+        if (application.getReport() != null) {
             return;
         }
         Instant startOfMonth = Instant.now().atZone(ZoneId.systemDefault())
@@ -81,6 +81,7 @@ public class ReportService implements IReportService {
         report.setFilePath(filePath);
         reportRepository.save(report);
     }
+
     private byte[] updateExcelFile(Report report) {
         Workbook workbook;
 
@@ -142,13 +143,7 @@ public class ReportService implements IReportService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         }, pageable);
 
-        return reports.map(report -> new ReportDto(
-                report.getId(),
-                report.getApplications(),
-                report.getName(),
-                report.getFilePath(),
-                report.getCreatedAt()
-        ));
+        return reports.map(ReportDto::new);
     }
 
     @Override

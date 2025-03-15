@@ -56,3 +56,42 @@ minio:
 admin:
   mail: ${ADMIN_MAIL}
   password: ${ADMIN_PASSWORD}
+
+
+customs:
+  base-clearance-fee: 3100
+  base-util-fee: 20000
+  etc-util-coeff-base: 1.0
+  ctp-util-coeff-base: 1.2
+  excise-rates:
+    gasoline: 58
+    diesel: 58
+    electric: 0
+    hybrid: 58
+  recycling-factors:
+    default:
+      gasoline: 1.0
+      diesel: 1.0
+      electric: 0.3
+      hybrid: 1.0
+    adjustments:
+      "5-7":
+        gasoline: 0.26
+        diesel: 0.26
+        electric: 0.26
+        hybrid: 0.26
+  age-groups:
+    overrides:
+      "5-7":
+        gasoline:
+          rate-per-cc: 4.8
+          min-duty: 0
+        diesel:
+          rate-per-cc: 5.0
+          min-duty: 0
+        electric:
+          rate-per-cc: 0
+          min-duty: 1000
+        hybrid:
+          rate-per-cc: 2.0
+          min-duty: 2500

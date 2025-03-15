@@ -19,12 +19,14 @@ import com.drujba.autobackend.services.file.IReportService;
 import com.drujba.autobackend.services.application.IApplicationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ApplicationService implements IApplicationService {
@@ -56,6 +58,8 @@ public class ApplicationService implements IApplicationService {
     @Override
     @Transactional
     public void updateApplicationStatus(UUID applicationId, ApplicationStatus status) {
+
+        log.info(status.toString());
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationDoesNotExistException(applicationId.toString()));
         if (application.getStatus() == status) {
@@ -63,6 +67,7 @@ public class ApplicationService implements IApplicationService {
         }
         if (status == ApplicationStatus.COMPLETED) {
             reportService.generateReport(applicationId);
+            log.info("Application {} has been completed", applicationId);
         }
         application.setStatus(status);
         applicationRepository.save(application);

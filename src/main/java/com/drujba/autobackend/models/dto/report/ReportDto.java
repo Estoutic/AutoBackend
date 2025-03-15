@@ -24,7 +24,7 @@ public class ReportDto {
     private UUID id;
 
     @JsonManagedReference
-    private List<Application> applications;
+    private List<ApplicationDto> applications;
 
     private String name;
 
@@ -35,7 +35,7 @@ public class ReportDto {
     public ReportDto(Report report) {
         this.filePath = report.getFilePath();
         this.name = report.getName();
-        this.applications = report.getApplications();
+        this.applications = report.getApplications().stream().map(application -> new ApplicationDto(application, this)).collect(Collectors.toList());
         this.id = report.getId();
         this.createdAt = report.getCreatedAt();
     }
@@ -43,7 +43,7 @@ public class ReportDto {
     public ReportDto(Report report, List<Application> applications) {
         this.filePath = report.getFilePath();
         this.name = report.getName();
-        this.applications = applications;
+        this.applications = applications.stream().map(application -> new ApplicationDto(application, this)).collect(Collectors.toList());
         this.id = report.getId();
         this.createdAt = report.getCreatedAt();
     }

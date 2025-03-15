@@ -18,8 +18,8 @@ public class CalculateController {
 
     private final ICalculateService calculationService;
 
-    @PostMapping("")
-    public ResponseEntity<CustomsCalculationResponseDto> calculate(@RequestBody CustomsCalculationRequestDto request) {
-        return ResponseEntity.ok(calculationService.calculate(request));
+    @PostMapping
+    public CustomsCalculationResponseDto calculate(@RequestBody CustomsCalculationRequestDto request) {
+        return calculationService.calculateCustoms(request);
     }
 }

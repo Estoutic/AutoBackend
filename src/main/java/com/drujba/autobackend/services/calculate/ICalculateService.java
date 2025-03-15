@@ -5,5 +5,5 @@ import com.drujba.autobackend.models.dto.calculate.CustomsCalculationResponseDto
 
 public interface ICalculateService {
 
-    CustomsCalculationResponseDto calculate(CustomsCalculationRequestDto request);
+    CustomsCalculationResponseDto calculateCustoms(CustomsCalculationRequestDto request);
 }
