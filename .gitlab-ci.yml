@@ -8,7 +8,7 @@ build-job:
     - shell
   script:
     - echo "Building the application..."
-    - ./mvnw clean package -DskipTests
+    - mvn clean package -DskipTests
   artifacts:
     paths:
       - target/*.jar
@@ -30,4 +30,4 @@ deploy-job:
   environment:
     name: production
   only:
-    - main
+    - master
