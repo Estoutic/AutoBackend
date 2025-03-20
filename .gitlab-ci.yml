@@ -31,3 +31,4 @@ deploy-job:
     name: production
   only:
     - main
+    
