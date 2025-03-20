@@ -17,7 +17,7 @@ build-job:
       - deploy.sh
     expire_in: 1 week
   only:
-    - main
+    - master
 
 deploy-job:
   stage: deploy
@@ -31,4 +31,3 @@ deploy-job:
     name: production
   only:
     - main
-    
