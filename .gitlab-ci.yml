@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+build-job:
+  stage: build
+  script:
+    - echo "Building the application..."
+    - ./mvnw clean package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
+      - Dockerfile
+      - docker-compose.yml
+      - deploy.sh
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "Deploying the application..."
+    - chmod +x deploy.sh
+    - ./deploy.sh
+  environment:
+    name: production
+  only:
+    - main
+  tags:
+    - shell
