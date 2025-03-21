@@ -14,6 +14,8 @@ build-job:
       - target/*.jar
       - Dockerfile
       - docker-compose.yml
+      - pwd
+      - ls -la
       - deploy.sh
     expire_in: 1 week
   only:
@@ -31,4 +33,3 @@ deploy-job:
     name: production
   only:
     - master
-    
