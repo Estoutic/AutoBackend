@@ -27,7 +27,7 @@ deploy-job:
     - shell
   script:
     - echo "Deploying the application..."
-    - /home/admin/projects/auto/deploy.sh
+    - sudo /home/admin/projects/auto/deploy.sh
   environment:
     name: production
   only:
