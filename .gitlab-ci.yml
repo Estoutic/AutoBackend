@@ -3,12 +3,17 @@ stages:
   - deploy
   - cleanup
 
+# Указываем явно, что используем shell раннер
+default:
+  tags:
+    - shell
+
 build:
   stage: build
   script:
     - echo "BUILD STARTED!"
     - java -version
-    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.11.0.9-2.el9.x86_64
+    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.11.0.9-2.el9.x86_64 || true
     - docker rmi -f autobackend:latest || true
     - docker build -t autobackend:latest .
     - echo "BUILD COMPLETED!"
@@ -20,8 +25,8 @@ deploy:
   stage: deploy
   script:
     - echo "DEPLOY STARTED!"
-    - mkdir -p /home/admin/projects/auto/back
-    - cp docker-compose.yml /home/admin/projects/auto/back/
+    - mkdir -p /home/admin/projects/auto/back || true
+    - cp docker-compose.yml /home/admin/projects/auto/back/ || true
     - cd /home/admin/projects/auto/back
     - docker-compose down || true
     - docker-compose up -d
@@ -34,5 +39,5 @@ cleanup:
   when: always
   script:
     - echo "CLEANUP STARTED!"
-    - docker system prune -a -f --volumes --filter "until=24h"
+    - docker system prune -a -f --volumes --filter "until=24h" || true
     - echo "CLEANUP COMPLETED!"
