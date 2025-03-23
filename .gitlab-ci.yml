@@ -28,12 +28,28 @@ deploy:
     - mkdir -p /home/admin/projects/auto/back || true
     - cp docker-compose.yml /home/admin/projects/auto/back/ || true
     - cd /home/admin/projects/auto/back
+
+    # Проверить существование сети Docker
+    - docker network ls | grep auto_network || docker network create auto_network
+
+    # Остановить существующие контейнеры
     - docker compose down || true
-    - docker compose up -d
+
+    # Запустить с явно указанными переменными окружения
+    - >
+      POSTGRES_USER=admin 
+      POSTGRES_PASSWORD=Caicoollaoban1 
+      POSTGRES_DB=auto 
+      MINIO_ROOT_USER=admin 
+      MINIO_ROOT_PASSWORD=Caicoollaoban1 
+      DOCKER_NETWORK_NAME=auto_network 
+      ADMIN_MAIL=drujba_narodov1@mail.ru 
+      ADMIN_PASSWORD=Caicoollaoban1 
+      docker compose up -d
+
     - echo "DEPLOY COMPLETED!"
   only:
     - master
-
 
 cleanup:
   stage: cleanup
