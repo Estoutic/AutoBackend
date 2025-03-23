@@ -27,8 +27,7 @@ deploy-job:
     - shell
   script:
     - echo "Deploying the application..."
-    - chmod +x deploy.sh
-    - ./deploy.sh
+    - /home/admin/projects/auto/deploy.sh
   environment:
     name: production
   only:
