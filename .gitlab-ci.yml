@@ -25,27 +25,48 @@ deploy:
   stage: deploy
   script:
     - echo "DEPLOY STARTED!"
-    - mkdir -p /home/admin/projects/auto/back || true
-    - cp docker-compose.yml /home/admin/projects/auto/back/ || true
-    - cd /home/admin/projects/auto/back
 
-    # Проверить существование сети Docker
+    # Создаем директорию для бэкенда
+    - mkdir -p /home/admin/projects/auto/back/logs
+
+    # Проверяем сеть Docker и создаем, если не существует
     - docker network ls | grep auto_network || docker network create auto_network
 
-    # Остановить существующие контейнеры
-    - docker compose down || true
+    # Создаем docker-compose.yml напрямую, без копирования
+    - |
+      cat > /home/admin/projects/auto/back/docker-compose.yml << 'EOL'
+      version: '3.8'
+      
+      services:
+        backend:
+          image: autobackend:latest
+          container_name: auto-backend
+          restart: always
+          ports:
+            - "8088:8088"
+          environment:
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/auto
+            - SPRING_DATASOURCE_USERNAME=admin
+            - SPRING_DATASOURCE_PASSWORD=Caicoollaoban1
+            - MINIO_URL=http://minio:9000
+            - MINIO_ACCESS_KEY=admin
+            - MINIO_SECRET_KEY=Caicoollaoban1
+            - ADMIN_MAIL=drujba_narodov1@mail.ru
+            - ADMIN_PASSWORD=Caicoollaoban1
+          networks:
+            - auto_network
+          volumes:
+            - ./logs:/logs
+      
+      networks:
+        auto_network:
+          external: true
+      EOL
 
-    # Запустить с явно указанными переменными окружения
-    - >
-      POSTGRES_USER=admin 
-      POSTGRES_PASSWORD=Caicoollaoban1 
-      POSTGRES_DB=auto 
-      MINIO_ROOT_USER=admin 
-      MINIO_ROOT_PASSWORD=Caicoollaoban1 
-      DOCKER_NETWORK_NAME=auto_network 
-      ADMIN_MAIL=drujba_narodov1@mail.ru 
-      ADMIN_PASSWORD=Caicoollaoban1 
-      docker compose up -d
+    # Запуск контейнеров
+    - cd /home/admin/projects/auto/back
+    - docker compose down || true
+    - docker compose up -d
 
     - echo "DEPLOY COMPLETED!"
   only:
