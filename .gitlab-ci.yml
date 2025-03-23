@@ -28,8 +28,8 @@ deploy:
     - mkdir -p /home/admin/projects/auto/back || true
     - cp docker-compose.yml /home/admin/projects/auto/back/ || true
     - cd /home/admin/projects/auto/back
-    - docker-compose down || true
-    - docker-compose up -d
+    - docker compose down || true
+    - docker compose up -d
     - echo "DEPLOY COMPLETED!"
   only:
     - master
