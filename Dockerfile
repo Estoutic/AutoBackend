@@ -1,21 +1,11 @@
-FROM eclipse-temurin:17-jdk-alpine AS build
-WORKDIR /workspace/app
+FROM maven:3.9.0-amazoncorretto-17 AS build
+COPY src /home/projects/auto_backend/src
+COPY pom.xml /home/projects/auto_backend/
+WORKDIR /home/projects/auto_backend/
+RUN mvn dependency:resolve
+RUN mvn clean package -DskipTests -DskipAspectJ=true
 
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY src src
-
-RUN chmod +x ./mvnw
-RUN ./mvnw package -DskipTests
-
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-
-ENV SPRING_PROFILES_ACTIVE=prod
-
-COPY --from=build /workspace/app/target/*.jar app.jar
-
+FROM amazoncorretto:17-alpine
+COPY --from=build /home/projects/auto_backend/target/*.jar /usr/local/lib/auto_backend.jar
 EXPOSE 8088
-
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/local/lib/auto_backend.jar"]

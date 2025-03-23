@@ -1,6 +1,6 @@
 stages:
   - build
-  - deploy_dev
+  - deploy
   - cleanup
 
 build:
@@ -8,62 +8,31 @@ build:
   script:
     - echo "BUILD STARTED!"
     - java -version
-    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-    - cd /home/gitlab-runner/builds/t2_4aDCyf/0/auto6971402/autobackend
-    - mvn clean package -DskipTests
-    - docker rmi -f auto-backend:latest || true
-    - docker build -t auto-backend:latest .
+    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.11.0.9-2.el9.x86_64
+    - docker rmi -f autobackend:latest || true
+    - docker build -t autobackend:latest .
     - echo "BUILD COMPLETED!"
   only:
     - master
   allow_failure: false
-  artifacts:
-    paths:
-      - target/*.jar
-    expire_in: 1 week
 
-deploy_dev:
-  stage: deploy_dev
+deploy:
+  stage: deploy
   script:
     - echo "DEPLOY STARTED!"
     - mkdir -p /home/admin/projects/auto/back
-    - cp -f Dockerfile /home/admin/projects/auto/back/
-    - cp -f docker-compose.yml /home/admin/projects/auto/back/ || echo "docker-compose.yml not found, skipping"
-    - cp -f target/*.jar /home/admin/projects/auto/back/app.jar
+    - cp docker-compose.yml /home/admin/projects/auto/back/
     - cd /home/admin/projects/auto/back
-    - cat > .env << EOF
-# PostgreSQL
-  POSTGRES_USER=admin
-  POSTGRES_PASSWORD=Caicoollaoban1
-  POSTGRES_DB=auto
-  
-  # MinIO
-  MINIO_ROOT_USER=admin
-  MINIO_ROOT_PASSWORD=Caicoollaoban1
-  
-  # Admin credentials
-  ADMIN_MAIL=drujba_narodov1@mail.ru
-  ADMIN_PASSWORD=admin123
-  
-  # JWT Signing Key
-  JWT_SIGNING_KEY=1Jy6lXMld5+F2K8z7Bc8E3z6oKQPfsd7L3l7QG3BFAc=
-  EOF
-- docker-compose down || true
-- docker-compose up -d --build
-- sleep 10
-- docker ps | grep auto-backend && echo "Deployment successful!" || echo "Deployment might have issues, check logs"
-- echo "DEPLOY COMPLETED!"
-only:
-  - master
-dependencies:
-  - build
+    - docker-compose down || true
+    - docker-compose up -d
+    - echo "DEPLOY COMPLETED!"
+  only:
+    - master
 
 cleanup:
   stage: cleanup
   when: always
   script:
     - echo "CLEANUP STARTED!"
-    - docker image prune -f
+    - docker system prune -a -f --volumes --filter "until=24h"
     - echo "CLEANUP COMPLETED!"
-  only:
-    - master
