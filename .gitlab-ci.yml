@@ -1,34 +1,69 @@
 stages:
   - build
-  - deploy
+  - deploy_dev
+  - cleanup
 
-build-job:
+build:
   stage: build
-  tags:
-    - shell
   script:
-    - echo "Building the application..."
+    - echo "BUILD STARTED!"
+    - java -version
+    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+    - cd /home/gitlab-runner/builds/t2_4aDCyf/0/auto6971402/autobackend
     - mvn clean package -DskipTests
+    - docker rmi -f auto-backend:latest || true
+    - docker build -t auto-backend:latest .
+    - echo "BUILD COMPLETED!"
+  only:
+    - master
+  allow_failure: false
   artifacts:
     paths:
       - target/*.jar
-      - Dockerfile
-      - docker-compose.yml
-      - pwd
-      - ls -la
-      - deploy.sh
     expire_in: 1 week
-  only:
-    - master
 
-deploy-job:
-  stage: deploy
-  tags:
-    - shell
+deploy_dev:
+  stage: deploy_dev
   script:
-    - echo "Deploying the application..."
-    - sudo /home/admin/projects/auto/deploy.sh
-  environment:
-    name: production
+    - echo "DEPLOY STARTED!"
+    - mkdir -p /home/admin/projects/auto/back
+    - cp -f Dockerfile /home/admin/projects/auto/back/
+    - cp -f docker-compose.yml /home/admin/projects/auto/back/ || echo "docker-compose.yml not found, skipping"
+    - cp -f target/*.jar /home/admin/projects/auto/back/app.jar
+    - cd /home/admin/projects/auto/back
+    - cat > .env << EOF
+# PostgreSQL
+  POSTGRES_USER=admin
+  POSTGRES_PASSWORD=Caicoollaoban1
+  POSTGRES_DB=auto
+  
+  # MinIO
+  MINIO_ROOT_USER=admin
+  MINIO_ROOT_PASSWORD=Caicoollaoban1
+  
+  # Admin credentials
+  ADMIN_MAIL=drujba_narodov1@mail.ru
+  ADMIN_PASSWORD=admin123
+  
+  # JWT Signing Key
+  JWT_SIGNING_KEY=1Jy6lXMld5+F2K8z7Bc8E3z6oKQPfsd7L3l7QG3BFAc=
+  EOF
+- docker-compose down || true
+- docker-compose up -d --build
+- sleep 10
+- docker ps | grep auto-backend && echo "Deployment successful!" || echo "Deployment might have issues, check logs"
+- echo "DEPLOY COMPLETED!"
+only:
+  - master
+dependencies:
+  - build
+
+cleanup:
+  stage: cleanup
+  when: always
+  script:
+    - echo "CLEANUP STARTED!"
+    - docker image prune -f
+    - echo "CLEANUP COMPLETED!"
   only:
     - master

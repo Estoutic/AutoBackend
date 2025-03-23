@@ -1,46 +1,34 @@
 version: '3.8'
 
 services:
-  auto-backend:
-    image: auto-backend:${CI_COMMIT_SHORT_SHA:-latest}
-    build:
-      context: .
-      dockerfile: Dockerfile
+
+  # Spring Backend приложение
+  backend:
+    image: auto-backend:latest
     container_name: auto-backend
-    restart: unless-stopped
+    restart: always
+    depends_on:
+      - postgres
+      - minio
     environment:
-      # Database Configuration - using host networking to connect to existing services
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-
-      # MinIO Configuration
-      MINIO_URL: http://minio:9000
+      MINIO_ENDPOINT: http://minio:9000
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
-
-      # JWT Configuration
-      JWT_SIGNING_KEY: ${JWT_SIGNING_KEY:-1Jy6lXMld5+F2K8z7Bc8E3z6oKQPfsd7L3l7QG3BFAc=}
-
-      # Admin Credentials
-      ADMIN_MAIL: ${ADMIN_MAIL:-admin@example.com}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      ADMIN_MAIL: ${ADMIN_MAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      JWT_SIGNING_KEY: ${JWT_SIGNING_KEY}
     ports:
-      - "8088:8088"
+      - "8080:8080"
     networks:
-      - auto_network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8088/api/actuator/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 1G
+      - auto-network
 
 networks:
-  auto_network:
-    external: true
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  minio-data:
