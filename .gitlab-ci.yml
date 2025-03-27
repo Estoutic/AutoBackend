@@ -31,38 +31,6 @@ deploy:
 
     # Проверяем сеть Docker и создаем, если не существует
     - docker network ls | grep auto_network || docker network create auto_network
-
-    # Создаем docker-compose.yml напрямую, без копирования
-    - |
-      cat > /home/admin/projects/auto/back/docker-compose.yml << 'EOL'
-      version: '3.8'
-      
-      services:
-        backend:
-          image: autobackend:latest
-          container_name: auto-backend
-          restart: always
-          ports:
-            - "8088:8088"
-          environment:
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/auto
-            - SPRING_DATASOURCE_USERNAME=admin
-            - SPRING_DATASOURCE_PASSWORD=Caicoollaoban1
-            - MINIO_URL=http://minio:9000
-            - MINIO_ACCESS_KEY=admin
-            - MINIO_SECRET_KEY=Caicoollaoban1
-            - ADMIN_MAIL=drujba_narodov1@mail.ru
-            - ADMIN_PASSWORD=Caicoollaoban1
-          networks:
-            - auto_network
-          volumes:
-            - ./logs:/logs
-      
-      networks:
-        auto_network:
-          external: true
-      EOL
-
     # Запуск контейнеров
     - cd /home/admin/projects/auto/back
     - docker compose down || true
