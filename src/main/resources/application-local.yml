@@ -24,9 +24,9 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://213.183.45.128:5432/auto
+    username: admin
+    password: Caicoollaoban1
     driverClassName: org.postgresql.Driver
 
 jwt:
@@ -45,15 +45,15 @@ jwt:
 
 minio:
   url: https://drujbacarsale.ru/minio
-  accessKey: ${MINIO_ACCESS_KEY}
-  secretKey: ${MINIO_SECRET_KEY}
+  accessKey: admin
+  secretKey: Caicoollaoban1
   buckets:
     image: images-bucket
     reports: reports-bucket
 
 admin:
-  mail: ${ADMIN_MAIL}
-  password: ${ADMIN_PASSWORD}
+  mail: drujba_narodov1@mail.ru
+  password: Caicoollaoban1
 
 customs:
   base-clearance-fee: 3100
