@@ -41,7 +41,8 @@ public class MinioService implements IMinioService {
                 .contentType(contentType)
                 .build());
 
-        return String.format("%s/%s/%s", minioUrl, bucketName, fileName);
+        return String.format("https://drujbacarsale.ru/minio/%s/%s", bucketName, fileName);
+
     }
 
     @SneakyThrows

@@ -48,7 +48,7 @@ deploy:
             - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/auto
             - SPRING_DATASOURCE_USERNAME=admin
             - SPRING_DATASOURCE_PASSWORD=Caicoollaoban1
-            - MINIO_URL=https://drujbacarsale.ru/minio
+            - MINIO_URL=http://213.183.45.128:9000
             - MINIO_ACCESS_KEY=admin
             - MINIO_SECRET_KEY=Caicoollaoban1
             - ADMIN_MAIL=drujba_narodov1@mail.ru
