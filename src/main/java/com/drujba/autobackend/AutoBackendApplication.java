@@ -7,7 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AutoBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AutoBackendApplication.class, args);
+        SpringApplication application = new SpringApplication(AutoBackendApplication.class);
+
+        // Set default profile to local if not specified
+        System.setProperty("spring.profiles.active", "local");
+
+        application.run(args);
     }
 
 }

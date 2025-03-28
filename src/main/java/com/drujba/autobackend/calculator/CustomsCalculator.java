@@ -43,13 +43,39 @@ public class CustomsCalculator {
             return amount;
         }
 
-        double rate = exchangeRateService.getExchangeRate(currency);
+        // Нормализуем валюту перед получением курса обмена
+        String normalizedCurrency = normalizeToISOCode(currency);
+
+        double rate = exchangeRateService.getExchangeRate(normalizedCurrency);
         double converted = amount * rate;
 
         log.info(String.format("Converted %.2f %s to %.2f RUB (rate: %.4f)",
                 amount, currency, converted, rate));
 
         return converted;
+    }
+
+    /**
+     * Нормализует пользовательский ввод валюты в стандартный ISO код
+     */
+    private String normalizeToISOCode(String currency) {
+        if (currency == null) return "USD";
+
+        String normalized = currency.toUpperCase().trim();
+
+        switch (normalized) {
+            case "EURO":
+                return "EUR";
+            case "YEN":
+                return "CNY";
+            case "YUAN":
+            case "CNY":
+                return "CNY";
+            case "DOLLAR":
+                return "USD";
+            default:
+                return normalized;
+        }
     }
 
     public void resetFields() {
