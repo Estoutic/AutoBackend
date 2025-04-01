@@ -10,7 +10,7 @@ public class AutoBackendApplication {
         SpringApplication application = new SpringApplication(AutoBackendApplication.class);
 
         // Set default profile to local if not specified
-        System.setProperty("spring.profiles.active", "local");
+//        System.setProperty("spring.profiles.active", "local");
 
         application.run(args);
     }

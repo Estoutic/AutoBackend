@@ -9,10 +9,12 @@ import com.drujba.autobackend.services.application.IApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @RestController
@@ -50,14 +52,16 @@ public class ApplicationController {
 
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
     @GetMapping("/filter")
-    public ResponseEntity<Page<ApplicationDto>> getApplicationsByStatus(
+    public ResponseEntity<Page<ApplicationDto>> getApplicationsByFilters(
             @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant createdAfter,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant createdBefore,
             @RequestParam(defaultValue = "EU") Locale locale,
             Pageable pageable) {
-        if (status == null) {
-            return ResponseEntity.ok(applicationService.getApplications(pageable, locale));
-        }
-        return ResponseEntity.ok(applicationService.getApplicationsByStatus(pageable,status,locale));
+
+        return ResponseEntity.ok(
+                applicationService.getApplicationsByFilters(pageable, status, createdAfter, createdBefore, locale)
+        );
     }
 
 

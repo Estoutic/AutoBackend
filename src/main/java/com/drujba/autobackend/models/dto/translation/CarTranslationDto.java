@@ -23,6 +23,10 @@ public class CarTranslationDto {
     private BigDecimal mileage;
     private BigDecimal price;
 
+    // New fields for currency and distance unit
+    private String currencyCode;
+    private boolean isMiles;
+
     public CarTranslationDto(CarTranslation carTranslation) {
         this.id = carTranslation.getId();
         this.locale = carTranslation.getLocale();
@@ -30,5 +34,7 @@ public class CarTranslationDto {
         this.description = carTranslation.getDescription();
         this.mileage = carTranslation.getMileage();
         this.price = carTranslation.getPrice();
+        this.currencyCode = carTranslation.getCurrencyCode();
+        this.isMiles = carTranslation.isMiles();
     }
 }

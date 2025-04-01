@@ -1,19 +1,14 @@
 package com.drujba.autobackend.services.translation.impl;
 
-//import com.drujba.autobackend.db.entities.Branch;
 import com.drujba.autobackend.db.entities.car.Car;
-//import com.drujba.autobackend.db.entities.translation.BranchTranslation;
 import com.drujba.autobackend.db.entities.translation.CarTranslation;
-//import com.drujba.autobackend.db.repositories.BranchRepository;
 import com.drujba.autobackend.db.repositories.car.CarRepository;
-//import com.drujba.autobackend.db.repositories.translation.BranchTranslationRepository;
 import com.drujba.autobackend.db.repositories.translation.CarTranslationRepository;
-import com.drujba.autobackend.exceptions.branch.BranchDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarDoesNotExistException;
 import com.drujba.autobackend.exceptions.car.CarTranslationAlreadyExistException;
 import com.drujba.autobackend.exceptions.car.CarTranslationDoesNotExistException;
-//import com.drujba.autobackend.models.dto.translation.BranchTranslationDto;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
+import com.drujba.autobackend.services.conversion.LocaleConversionService;
 import com.drujba.autobackend.services.translation.ITranslationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +23,7 @@ public class TranslationService implements ITranslationService {
 
     private final CarRepository carRepository;
     private final CarTranslationRepository carTranslationRepository;
-//    private final BranchTranslationRepository branchTranslationRepository;
-//    private final BranchRepository branchRepository;
+    private final LocaleConversionService conversionService;
 
     @Override
     @Transactional
@@ -37,9 +31,23 @@ public class TranslationService implements ITranslationService {
         Car car = carRepository.findById(dto.getCarId())
                 .orElseThrow(() -> new CarDoesNotExistException(dto.getCarId().toString()));
 
-        if (carTranslationRepository.existsCarTranslationByLocale(dto.getLocale())){
+        if (carTranslationRepository.existsCarTranslationByLocale(dto.getLocale())) {
             throw new CarTranslationAlreadyExistException(car.getId(), dto.getLocale());
         }
+
+        // Apply locale-specific conversions before saving
+        applyLocaleConversions(dto);
+
+        // Set currency code and miles flag if not explicitly provided
+        if (dto.getCurrencyCode() == null) {
+            dto.setCurrencyCode(conversionService.getCurrencyCode(dto.getLocale()));
+        }
+
+        // Only set isMiles if not explicitly set by client
+        if (!dto.isMiles()) {
+            dto.setMiles(conversionService.isMiles(dto.getLocale()));
+        }
+
         CarTranslation carTranslation = new CarTranslation(dto, car);
         carTranslationRepository.save(carTranslation);
         return carTranslation.getId();
@@ -50,6 +58,21 @@ public class TranslationService implements ITranslationService {
     public void updateCarTranslation(UUID translationId, CarTranslationDto dto) {
         CarTranslation existingTranslation = carTranslationRepository.findById(translationId)
                 .orElseThrow(() -> new CarTranslationDoesNotExistException(translationId.toString()));
+
+        // Apply locale-specific conversions if needed
+        if (dto.getLocale() != null) {
+            applyLocaleConversions(dto);
+
+            // Update currency code if not explicitly provided
+            if (dto.getCurrencyCode() == null) {
+                dto.setCurrencyCode(conversionService.getCurrencyCode(dto.getLocale()));
+            }
+
+            // Update miles flag if not explicitly provided
+            if (!dto.isMiles()) {
+                dto.setMiles(conversionService.isMiles(dto.getLocale()));
+            }
+        }
 
         if (dto.getColor() != null) {
             existingTranslation.setColor(dto.getColor());
@@ -62,6 +85,12 @@ public class TranslationService implements ITranslationService {
         }
         if (dto.getPrice() != null) {
             existingTranslation.setPrice(dto.getPrice());
+        }
+        if (dto.getCurrencyCode() != null) {
+            existingTranslation.setCurrencyCode(dto.getCurrencyCode());
+        }
+        if (dto.isMiles()) {
+            existingTranslation.setMiles(dto.isMiles());
         }
 
         carTranslationRepository.save(existingTranslation);
@@ -84,49 +113,21 @@ public class TranslationService implements ITranslationService {
         return carTranslations.stream().map(CarTranslationDto::new).toList();
     }
 
-//    @Override
-//    public UUID createBranchTranslation(BranchTranslationDto dto) {
-//        Branch branch = branchRepository.findById(dto.getBranchId())
-//                .orElseThrow(() -> new BranchDoesNotExistException(dto.getBranchId().toString()));
-//
-//        branchTranslationRepository.existsBranchTranslationByLocale(dto.getLocale());
-//        BranchTranslation branchTranslation = new BranchTranslation(dto, branch);
-//        branchTranslationRepository.save(branchTranslation);
-//        return branchTranslation.getId();
-//    }
-//
-//    @Override
-//    public void updateBranchTranslation(UUID translationId, BranchTranslationDto dto) {
-//        BranchTranslation branchTranslation = branchTranslationRepository.findById(translationId).orElseThrow(
-//                () -> new BranchDoesNotExistException(dto.getBranchId().toString()));
-//        if (dto.getName() != null) {
-//            branchTranslation.setName(dto.getName());
-//        }
-//        if (dto.getCity() != null) {
-//            branchTranslation.setCity(dto.getCity());
-//        }
-//        if (dto.getAddress() != null) {
-//            branchTranslation.setAddress(dto.getAddress());
-//        }
-//        if (dto.getRegion() != null) {
-//            branchTranslation.setRegion(dto.getRegion());
-//        }
-//        branchTranslationRepository.save(branchTranslation);
-//    }
-//
-//    @Override
-//    public void deleteBranchTranslation(UUID branchId) {
-//
-//        BranchTranslation branchTranslation = branchTranslationRepository.findById(branchId).orElseThrow(
-//                () -> new BranchDoesNotExistException(branchId.toString()));
-//        branchTranslationRepository.delete(branchTranslation);
-//    }
-//
-//    @Override
-//    public List<BranchTranslationDto> getBranchTranslations(UUID branchId) {
-//        Branch branch = branchRepository.findById(branchId).orElseThrow(() ->
-//                new BranchDoesNotExistException(branchId.toString()));
-//        List<BranchTranslation> branchTranslations = branchTranslationRepository.findAllByBranch(branch);
-//        return branchTranslations.stream().map(BranchTranslationDto::new).toList();
-//    }
+    /**
+     * Helper method to apply locale-specific conversions to a DTO
+     * This converts mileage and price based on the specified locale
+     */
+    private void applyLocaleConversions(CarTranslationDto dto) {
+        if (dto.getLocale() != null) {
+            // Convert mileage if needed
+            if (dto.getMileage() != null) {
+                dto.setMileage(conversionService.convertMileage(dto.getMileage(), dto.getLocale()));
+            }
+
+            // Convert price if needed
+            if (dto.getPrice() != null) {
+                dto.setPrice(conversionService.convertPrice(dto.getPrice(), dto.getLocale()));
+            }
+        }
+    }
 }

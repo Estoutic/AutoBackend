@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class ApplicationService implements IApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final CarRepository carRepository;
-//    private final BranchRepository branchRepository;
+    //    private final BranchRepository branchRepository;
     private final IReportService reportService;
 
     @Override
@@ -80,16 +81,65 @@ public class ApplicationService implements IApplicationService {
         return new ApplicationDto(application, locale);
     }
 
-    @Override
+
+    /**
+     * Get all applications
+     */
     public Page<ApplicationDto> getApplications(Pageable pageable, Locale locale) {
         return applicationRepository.findAllByOrderByCreatedAtDesc(pageable)
                 .map(application -> new ApplicationDto(application, locale));
     }
 
-    @Override
+    /**
+     * Get applications by status
+     */
     public Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status, Locale locale) {
         return applicationRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable)
-                .map(application -> new ApplicationDto(application,locale));
+                .map(application -> new ApplicationDto(application, locale));
+    }
+
+    /**
+     * Get applications with filtering by status and creation date
+     */
+    public Page<ApplicationDto> getApplicationsByFilters(
+            Pageable pageable,
+            ApplicationStatus status,
+            Instant createdAfter,
+            Instant createdBefore,
+            Locale locale) {
+
+        Page<Application> applications;
+
+        // Handle different filter combinations
+        if (status != null) {
+            if (createdAfter != null && createdBefore != null) {
+                applications = applicationRepository.findAllByStatusAndCreatedAtBetweenOrderByCreatedAtDesc(
+                        status, createdAfter, createdBefore, pageable);
+            } else if (createdAfter != null) {
+                applications = applicationRepository.findAllByStatusAndCreatedAtGreaterThanEqualOrderByCreatedAtDesc(
+                        status, createdAfter, pageable);
+            } else if (createdBefore != null) {
+                applications = applicationRepository.findAllByStatusAndCreatedAtLessThanEqualOrderByCreatedAtDesc(
+                        status, createdBefore, pageable);
+            } else {
+                applications = applicationRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable);
+            }
+        } else {
+            if (createdAfter != null && createdBefore != null) {
+                applications = applicationRepository.findAllByCreatedAtBetweenOrderByCreatedAtDesc(
+                        createdAfter, createdBefore, pageable);
+            } else if (createdAfter != null) {
+                applications = applicationRepository.findAllByCreatedAtGreaterThanEqualOrderByCreatedAtDesc(
+                        createdAfter, pageable);
+            } else if (createdBefore != null) {
+                applications = applicationRepository.findAllByCreatedAtLessThanEqualOrderByCreatedAtDesc(
+                        createdBefore, pageable);
+            } else {
+                applications = applicationRepository.findAllByOrderByCreatedAtDesc(pageable);
+            }
+        }
+
+        return applications.map(application -> new ApplicationDto(application, locale));
     }
 
     public void validateContactDetails(ContactType contactType, String contactDetails) {

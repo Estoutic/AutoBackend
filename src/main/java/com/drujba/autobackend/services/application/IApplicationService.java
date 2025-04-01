@@ -7,6 +7,7 @@ import com.drujba.autobackend.models.enums.application.ApplicationStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public interface IApplicationService {
@@ -19,8 +20,14 @@ public interface IApplicationService {
 
     ApplicationDto getApplication(UUID applicationId, Locale locale);
 
-    Page<ApplicationDto> getApplications(Pageable pageable,  Locale locale);
+    Page<ApplicationDto> getApplications(Pageable pageable, Locale locale);
 
-    Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status,  Locale locale);
+    Page<ApplicationDto> getApplicationsByStatus(Pageable pageable, ApplicationStatus status, Locale locale);
 
+    public Page<ApplicationDto> getApplicationsByFilters(
+            Pageable pageable,
+            ApplicationStatus status,
+            Instant createdAfter,
+            Instant createdBefore,
+            Locale locale);
 }
