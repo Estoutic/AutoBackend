@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.generator;
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.models.dto.car.CarCreationDto;
 import com.drujba.autobackend.models.dto.car.CarModelDto;
 import com.drujba.autobackend.models.enums.car.*;
@@ -36,6 +37,7 @@ public class CarModelGeneratorController {
      */
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping("/models")
+    @AuditLog(entityType = "CarModel", action = "GENERATE_MULTIPLE")
     public ResponseEntity<Map<String, Object>> generateCarModels(
             @RequestParam(defaultValue = "30") int count) {
 
@@ -174,6 +176,7 @@ public class CarModelGeneratorController {
      */
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping("/cars")
+    @AuditLog(entityType = "Car", action = "GENERATE_MULTIPLE")
     public ResponseEntity<Map<String, Object>> generateCars(
             @RequestParam(defaultValue = "50") int count) {
 

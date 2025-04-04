@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.auth;
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.configs.auth.TokenProvider;
 import com.drujba.autobackend.db.entities.auth.RefreshToken;
 import com.drujba.autobackend.db.entities.auth.User;
@@ -41,6 +42,7 @@ public class UserController {
 
 
     @PostMapping("/auth")
+    @AuditLog(entityType = "User", action = "LOGIN")
     public ResponseEntity<?> generateToken(@RequestBody UserDto loginUser) throws JsonProcessingException {
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -71,6 +73,7 @@ public class UserController {
 //    }
 
     @PostMapping("/refresh-token")
+    @AuditLog(entityType = "User", action = "TOKEN_REFRESH")
     public ResponseEntity<AuthToken> refreshToken(@RequestBody RefreshTokenDto refreshToken) {
         Optional<RefreshToken> optionalRefreshToken = refreshTokenService.findByToken(refreshToken.getRefreshToken());
 

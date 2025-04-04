@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.admin;
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.models.dto.report.ReportDto;
 import com.drujba.autobackend.models.dto.auth.UserDto;
 import com.drujba.autobackend.models.dto.report.ReportFilterDto;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -31,54 +31,23 @@ public class AdminController {
 
     @PreAuthorize("hasRole('SUPERADMIN')")
     @PostMapping("/user/create")
+    @AuditLog(entityType = "User", action = "CREATE")
     public ResponseEntity<UUID> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(authService.save(userDto));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PutMapping("/user/{id}/deactivate")
+    @AuditLog(entityType = "User", action = "DEACTIVATE")
     public ResponseEntity<Void> deactivateUser(@PathVariable UUID id, HttpServletRequest request) {
         adminService.deactivateEmployee(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
-    @GetMapping("/user/all")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        return ResponseEntity.ok(adminService.getAllUsers());
-    }
-
-
     @DeleteMapping("report/{id}")
+    @AuditLog(entityType = "Report", action = "DELETE")
     public ResponseEntity<Void> deleteReport(@PathVariable UUID id) {
         reportService.deleteReport(id);
         return ResponseEntity.noContent().build();
     }
-    @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
-    @GetMapping("/report/all")
-    public ResponseEntity<Page<ReportDto>> getAllReports(
-            @RequestParam(required = false) String createdAfter,
-            @RequestParam(required = false) String createdBefore,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
-
-        ReportFilterDto filterDto = new ReportFilterDto();
-        if (createdAfter != null) {
-            filterDto.setCreatedAfter(Instant.parse(createdAfter));
-        }
-        if (createdBefore != null) {
-            filterDto.setCreatedBefore(Instant.parse(createdBefore));
-        }
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
-        Page<ReportDto> reports = reportService.getFilteredReports(filterDto, pageable);
-        return ResponseEntity.ok(reports);
-    }
-    @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
-    @GetMapping("/report/{id}")
-    public ResponseEntity<String> getReport(@PathVariable UUID id) {
-        return ResponseEntity.ok(reportService.getReportDownloadLink(id));
-    }
-
 }

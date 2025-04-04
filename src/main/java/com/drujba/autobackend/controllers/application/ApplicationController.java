@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.application;
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.db.entities.Application;
 import com.drujba.autobackend.models.dto.apllication.ApplicationCreationDto;
 import com.drujba.autobackend.models.dto.apllication.ApplicationDto;
@@ -31,6 +32,7 @@ public class ApplicationController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping("/{id}")
+    @AuditLog(entityType = "Application", action = "DELETE")
     public ResponseEntity<Void> deleteApplication(@PathVariable UUID id) {
         applicationService.deleteApplication(id);
         return ResponseEntity.noContent().build();
@@ -38,6 +40,7 @@ public class ApplicationController {
 
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
     @PatchMapping("/{id}")
+    @AuditLog(entityType = "Application", action = "UPDATE_STATUS")
     public ResponseEntity<Void> updateApplicationStatus(@PathVariable UUID id,
                                                         @RequestParam ApplicationStatus status) {
         applicationService.updateApplicationStatus(id, status);

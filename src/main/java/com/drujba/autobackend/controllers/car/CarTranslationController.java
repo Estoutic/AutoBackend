@@ -1,6 +1,7 @@
 package com.drujba.autobackend.controllers.car;
 
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
 import com.drujba.autobackend.services.translation.impl.TranslationService;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,14 @@ public class CarTranslationController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping()
+    @AuditLog(entityType = "CarTranslation", action = "CREATE")
     public ResponseEntity<UUID> createCarTranslation(@RequestBody CarTranslationDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(translationService.createCarTranslation(dto));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PatchMapping("/{id}")
+    @AuditLog(entityType = "CarTranslation", action = "UPDATE")
     public ResponseEntity<Void> updateCarTranslation(@PathVariable UUID id, @RequestBody CarTranslationDto dto) {
         translationService.updateCarTranslation(id, dto);
         return ResponseEntity.noContent().build();
@@ -34,6 +37,7 @@ public class CarTranslationController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping("/{id}")
+    @AuditLog(entityType = "CarTranslation", action = "DELETE")
     public ResponseEntity<Void> deleteCarTranslation(@PathVariable UUID id) {
         translationService.deleteCarTranslation(id);
         return ResponseEntity.noContent().build();

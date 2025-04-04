@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.car;
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.db.entities.car.CarModel;
 import com.drujba.autobackend.db.repositories.car.CarModelRepository;
 import com.drujba.autobackend.exceptions.car.CarModelDoesNotExistException;
@@ -28,12 +29,14 @@ public class CarModelController {
 
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN','SUPERADMIN')")
     @PostMapping("")
+    @AuditLog(entityType = "CarModel", action = "CREATE")
     public ResponseEntity<UUID> createModel(@RequestBody CarModelDto carModelDto) {
         return new ResponseEntity<>(carModelService.saveCarModel(carModelDto), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, params = {"brand", "model", "generation"})
+    @AuditLog(entityType = "CarModel", action = "DELETE")
     public ResponseEntity<Void> delete(
             @RequestParam String brand,
             @RequestParam String model,
@@ -46,13 +49,13 @@ public class CarModelController {
 
         log.info("Deleting car model: {}", carModelDto);
 
-
         carModelService.deleteCarModel(carModelDto);
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PatchMapping("/{id}")
+    @AuditLog(entityType = "CarModel", action = "UPDATE")
     public ResponseEntity<Void> updateModel(@PathVariable UUID id, @RequestBody CarModelDto carModelDto) {
         carModelService.updateCarModel(id, carModelDto);
         return ResponseEntity.noContent().build();

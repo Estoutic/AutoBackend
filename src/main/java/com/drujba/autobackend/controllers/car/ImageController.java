@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.car;
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.exceptions.minio.UploadImageException;
 import com.drujba.autobackend.models.dto.car.ImageResponseDto;
 import com.drujba.autobackend.models.dto.car.UploadImageRequest;
@@ -23,6 +24,7 @@ public class ImageController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping("/{id}")
+    @AuditLog(entityType = "CarImage", action = "UPLOAD")
     public ResponseEntity<UUID> uploadImage(@PathVariable("id") UUID id,
                                             @ModelAttribute UploadImageRequest request) {
         try {
@@ -37,6 +39,7 @@ public class ImageController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping("/{id}/multiple")
+    @AuditLog(entityType = "CarImage", action = "UPLOAD_MULTIPLE")
     public ResponseEntity<List<UUID>> uploadMultipleImages(@PathVariable("id") UUID id,
                                                            @RequestParam("files") List<MultipartFile> files) {
         if (files.isEmpty()) {
@@ -45,16 +48,19 @@ public class ImageController {
         return ResponseEntity.ok(imageService.saveImages(id, files));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
+    @DeleteMapping("/{id}/photo/{photoId}")
+    @AuditLog(entityType = "CarImage", action = "DELETE")
+    public ResponseEntity<Void> deleteImage(@PathVariable("id") UUID id, @PathVariable("photoId") UUID photoId) {
+        imageService.deleteImage(id, photoId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{id}/all")
     public ResponseEntity<ImageResponseDto> getAllImages(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(imageService.getImagesByCarId(id));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
-    @DeleteMapping("/{id}/photo/{photoId}")
-    public ResponseEntity<Void> deleteImage(@PathVariable("id") UUID id, @PathVariable("photoId") UUID photoId) {
-        imageService.deleteImage(id, photoId);
-        return ResponseEntity.noContent().build();
-    }
+
 }
 

@@ -1,5 +1,6 @@
 package com.drujba.autobackend.controllers.car;
 
+import com.drujba.autobackend.annotations.AuditLog;
 import com.drujba.autobackend.models.dto.car.*;
 import com.drujba.autobackend.models.dto.translation.CarTranslationDto;
 import com.drujba.autobackend.models.enums.Locale;
@@ -27,20 +28,22 @@ public class CarController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PostMapping()
+    @AuditLog(entityType = "Car", action = "CREATE")
     public ResponseEntity<UUID> addCar(@RequestBody CarCreationDto carCreationDto) {
         return ResponseEntity.ok(carService.saveCar(carCreationDto));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @DeleteMapping("/{id}")
+    @AuditLog(entityType = "Car", action = "DELETE")
     public ResponseEntity<Void> deleteCar(@PathVariable UUID id) {
         carService.hideCar(id);
         return ResponseEntity.noContent().build();
     }
 
-
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @PatchMapping("/{id}")
+    @AuditLog(entityType = "Car", action = "UPDATE")
     public ResponseEntity<Void> updateCar(@PathVariable UUID id, @RequestBody CarUpdateDto carUpdateDto) {
         carService.updateCar(id, carUpdateDto);
         return ResponseEntity.noContent().build();
