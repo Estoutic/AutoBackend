@@ -27,4 +27,7 @@ public interface CarModelRepository extends JpaRepository<CarModel, UUID> {
 
     @Query("SELECT DISTINCT cm.generation FROM CarModel cm WHERE cm.model = :model")
     List<String> findDistinctGenerationsByModel(@Param("model") String model);
+
+    @Query("SELECT cm.brand, cm.model, cm.generation FROM CarModel cm ORDER BY cm.brand, cm.model, cm.generation")
+    List<Object[]> findAllBrandsModelsGeneration();
 }

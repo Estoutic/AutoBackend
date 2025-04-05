@@ -18,4 +18,6 @@ public interface CarTranslationRepository extends JpaRepository<CarTranslation, 
    List<CarTranslation> findAllByCar(Car car);
 
    Optional<CarTranslation> findByCarAndLocale(Car car, Locale locale);
+
+   List<CarTranslation> findByCarIdInAndLocale(List<UUID> carIds, Locale locale);
 }

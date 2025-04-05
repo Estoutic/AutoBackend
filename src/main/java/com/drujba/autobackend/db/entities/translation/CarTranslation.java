@@ -15,7 +15,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "car_translations")
+@Table(name = "car_translations", indexes = {
+        @Index(name = "idx_car_translation_car_locale", columnList = "car_id,locale")
+})
 public class CarTranslation {
 
     @Id

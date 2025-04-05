@@ -144,3 +144,12 @@ customs:
         hybrid:
           rate-per-cc: 3.0
           min-duty: 3000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,caches
+  endpoint:
+    health:
+      show-details: always

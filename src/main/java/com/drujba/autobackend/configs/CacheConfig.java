@@ -7,12 +7,22 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableCaching
 public class CacheConfig {
-
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("exchangeRates");
+        ConcurrentMapCacheManager cacheManager = new ConcurrentMapCacheManager();
+        cacheManager.setCacheNames(Arrays.asList(
+                "exchangeRates",
+                "cars",
+                "carModels",
+                "carFilters",
+                "carTranslations",
+                "images"
+        ));
+        return cacheManager;
     }
 }

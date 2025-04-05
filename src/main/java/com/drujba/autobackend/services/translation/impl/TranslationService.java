@@ -12,10 +12,13 @@ import com.drujba.autobackend.services.conversion.LocaleConversionService;
 import com.drujba.autobackend.services.translation.ITranslationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class TranslationService implements ITranslationService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"carTranslations", "cars"}, allEntries = true)
     public UUID createCarTranslation(CarTranslationDto dto) {
         Car car = carRepository.findById(dto.getCarId())
                 .orElseThrow(() -> new CarDoesNotExistException(dto.getCarId().toString()));
@@ -55,6 +59,7 @@ public class TranslationService implements ITranslationService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"carTranslations", "cars"}, allEntries = true)
     public void updateCarTranslation(UUID translationId, CarTranslationDto dto) {
         CarTranslation existingTranslation = carTranslationRepository.findById(translationId)
                 .orElseThrow(() -> new CarTranslationDoesNotExistException(translationId.toString()));
@@ -98,6 +103,7 @@ public class TranslationService implements ITranslationService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"carTranslations", "cars"}, allEntries = true)
     public void deleteCarTranslation(UUID translationId) {
         CarTranslation existingTranslation = carTranslationRepository.findById(translationId)
                 .orElseThrow(() -> new CarTranslationDoesNotExistException(translationId.toString()));
@@ -105,14 +111,15 @@ public class TranslationService implements ITranslationService {
         carTranslationRepository.delete(existingTranslation);
     }
 
+
+    @Cacheable(value = "carTranslations", key = "#carId")
     @Override
     public List<CarTranslationDto> getCarTranslations(UUID carId) {
         Car car = carRepository.findById(carId).orElseThrow(() ->
                 new CarDoesNotExistException(carId.toString()));
         List<CarTranslation> carTranslations = carTranslationRepository.findAllByCar(car);
-        return carTranslations.stream().map(CarTranslationDto::new).toList();
+        return carTranslations.stream().map(CarTranslationDto::new).collect(Collectors.toList());
     }
-
     /**
      * Helper method to apply locale-specific conversions to a DTO
      * This converts mileage and price based on the specified locale

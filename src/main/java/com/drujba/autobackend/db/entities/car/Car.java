@@ -17,7 +17,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "cars")
+@Table(name = "cars", indexes = {
+        @Index(name = "idx_car_model_id", columnList = "car_model_id"),
+        @Index(name = "idx_car_price", columnList = "price"),
+        @Index(name = "idx_car_year", columnList = "year"),
+        @Index(name = "idx_car_available", columnList = "is_available")
+})
 public class Car {
 
     @Id

@@ -12,7 +12,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "car_models")
+@Table(name = "car_models", indexes = {
+        @Index(name = "idx_car_model_brand", columnList = "brand"),
+        @Index(name = "idx_car_model_brand_model", columnList = "brand,model"),
+        @Index(name = "idx_car_model_unique", columnList = "brand,model,generation", unique = true)
+})
 public class CarModel {
 
     @Id
